@@ -1,0 +1,17 @@
+[package]
+name = "great_western_trail"
+version = "0.1.0"
+authors = ["michael <mfdeakin@cs.unc.edu>"]
+edition = "2018"
+
+[lib]
+name = "engine"
+path = "src/engine/engine.rs"
+test = true
+
+[dependencies]
+criterion = "0.3"
+
+[[bench]]
+name = "gwt_bench"
+harness = false
