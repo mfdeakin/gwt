@@ -36,13 +36,18 @@ impl Cow {
     }
 }
 
-pub struct Objective {
-    immediate: Action,
+impl Copy for Cow {}
+impl Clone for Cow {
+    fn clone(&self) -> Self { todo!() }
+}
+
+pub struct Objective<'a> {
+    immediate: Action<'a>,
     success_pts: u32,
     fail_pts: u32,
 }
 
-impl Objective {
+impl<'a> Objective<'a> {
     fn meets_requirements(&self, player: Player) -> bool {
         panic!("Not implemented");
         false

@@ -4,14 +4,14 @@ use std::fs::File;
 use std::io::Read;
 use std::mem::size_of;
 
-pub struct Space {
-    building: Option<Building>,
+pub struct Space<'a> {
+    building: Option<Building<'a>>,
     nextBuilding: usize,
     nextSpace: usize,
 }
 
-impl Space {
-    pub fn empty(pos: usize) -> Space {
+impl<'a> Space<'a> {
+    pub fn empty(pos: usize) -> Space<'a> {
         return Space { building: None, nextBuilding: 0, nextSpace: pos + 1 };
     }
 
