@@ -1,6 +1,10 @@
-
 use crate::actions::Action;
 use crate::player::Player;
+
+pub enum Card<'a> {
+    Cow(Cow),
+    Objective(&'a Objective<'a>),
+}
 
 #[derive(Copy, Clone)]
 pub enum Color {
@@ -15,6 +19,7 @@ pub enum Color {
     Longhorn,
 }
 
+#[derive(Copy, Clone)]
 pub struct Cow {
     color: Color,
     points: u32,
@@ -23,24 +28,20 @@ pub struct Cow {
 impl Cow {
     pub fn value(&self) -> u32 {
         match self.color {
-            Jersey => 1,
-            Dutch => 2,
-            Angus => 2,
-            Guernsey => 2,
-            Holstein => 3,
-            Swiss => 3,
-            Ayrshire => 3,
-            Highland => 4,
-            Longhorn => 5,
+            Color::Jersey => 1,
+            Color::Dutch => 2,
+            Color::Angus => 2,
+            Color::Guernsey => 2,
+            Color::Holstein => 3,
+            Color::Swiss => 3,
+            Color::Ayrshire => 3,
+            Color::Highland => 4,
+            Color::Longhorn => 5,
         }
     }
 }
 
-impl Copy for Cow {}
-impl Clone for Cow {
-    fn clone(&self) -> Self { todo!() }
-}
-
+#[derive(Copy, Clone)]
 pub struct Objective<'a> {
     immediate: Action<'a>,
     success_pts: u32,
@@ -50,6 +51,5 @@ pub struct Objective<'a> {
 impl<'a> Objective<'a> {
     fn meets_requirements(&self, player: Player) -> bool {
         panic!("Not implemented");
-        false
     }
 }

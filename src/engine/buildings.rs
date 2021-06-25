@@ -3,47 +3,32 @@ use crate::actions::Action;
 use crate::logical::{And, Or, XOr};
 use std::fs::File;
 
+#[derive(Copy, Clone)]
 pub enum TepeeColor {
     Green,
     Blue,
 }
 
-impl Copy for TepeeColor {}
-impl Clone for TepeeColor {
-    fn clone(&self) -> Self { todo!() }
-}
-
+#[derive(Copy, Clone)]
 pub struct Tepee {
     color: TepeeColor,
 }
 
-impl Copy for Tepee {}
-impl Clone for Tepee {
-    fn clone(&self) -> Self { todo!() }
-}
-
+#[derive(Copy, Clone)]
 pub enum HazardType {
     Flood,
     Drought,
     Rockfall,
 }
 
-impl Copy for HazardType {}
-impl Clone for HazardType {
-    fn clone(&self) -> Self { todo!() }
-}
-
+#[derive(Copy, Clone)]
 pub struct Hazard {
     area: HazardType,
     toll: u32,
     points: u32,
 }
 
-impl Copy for Hazard {}
-impl Clone for Hazard {
-    fn clone(&self) -> Self { todo!() }
-}
-
+#[derive(Copy, Clone)]
 pub struct Building<'a> {
     // action_options: Or<XOr<u32, 2>, 3>,
     owner: u32,

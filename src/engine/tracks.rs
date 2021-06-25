@@ -4,6 +4,7 @@ use std::fs::File;
 use std::io::Read;
 use std::mem::size_of;
 
+#[derive(Copy, Clone)]
 pub struct Space<'a> {
     building: Option<Building<'a>>,
     nextBuilding: usize,
@@ -31,7 +32,7 @@ fn readTrack(mut input: &File) -> Vec<Space> {
     input.read(&mut numSpaces[..]).unwrap();
     let numSpaces: usize = numSpaces[0].into();
     let mut track: Vec<Space> = Vec::with_capacity(numSpaces);
-    for i in (0..numSpaces) {
+    for i in 0..numSpaces {
         track[i] = Space::empty(i)
     }
     return track;

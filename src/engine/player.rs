@@ -1,19 +1,29 @@
-
 use crate::actions::Action;
+use crate::deck::Objective;
+use crate::buildings::Building;
 
+#[derive(Copy, Clone)]
 pub enum Employee {
     Cowboy = 0,
     Craftsman = 1,
     Engineer = 2,
 }
 
-impl Copy for Employee {}
-impl Clone for Employee {
-    fn clone(&self) -> Self { todo!() }
+#[derive(Clone)]
+pub struct Player<'a> {
+    dollars: u32,
+    hired: [u32; 3],
+    buildings: Vec<Building<'a>>,
+    playedObjectives: Vec<Objective<'a>>,
 }
 
-pub struct Player {
-    coins: i32,
-    hired: [u32; 3],
-
+impl<'a> Player<'a> {
+    pub fn new(turnPos: u32, playerBuildings: Vec<Building<'a>>) -> Player<'a> {
+        return Player {
+            dollars: turnPos + 6,
+            hired: [0; 3],
+            buildings: playerBuildings,
+            playedObjectives: Vec::<Objective>::with_capacity(4),
+        };
+    }
 }
