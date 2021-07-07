@@ -8,13 +8,13 @@ mod deck;
 use crate::buildings::Building;
 use crate::player::Player;
 
-struct Engine<'a> {
+struct Engine {
     starting_player: u32,
-    players: Vec<Player<'a>>,
+    players: Vec<Player>,
 }
 
-impl<'a> Engine<'a> {
-    pub fn startDefaultGame(numPlayers: u32) -> Engine<'a> {
+impl Engine {
+    pub fn startDefaultGame(numPlayers: u32) -> Engine {
         let mut buildings = Vec::<Building>::with_capacity(10);
         let mut players = Vec::<Player>::with_capacity(numPlayers as usize);
         for i in 0..numPlayers {

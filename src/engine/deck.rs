@@ -1,13 +1,16 @@
-use crate::actions::Action;
-use crate::player::Player;
 
-pub enum Card<'a> {
+use serde::{Serialize, Deserialize};
+use crate::actions::{Action, ActionTag};
+use crate::player::Player;
+use crate::logical::And;
+
+pub enum Card {
     Cow(Cow),
-    Objective(&'a Objective<'a>),
+    Objective(Objective),
 }
 
-#[derive(Copy, Clone)]
-pub enum Color {
+#[derive(Copy, Clone, Serialize, Deserialize, Debug)]
+pub enum CowColor {
     Jersey,
     Dutch,
     Angus,
@@ -19,36 +22,46 @@ pub enum Color {
     Longhorn,
 }
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Serialize, Deserialize, Debug)]
 pub struct Cow {
-    color: Color,
+    color: CowColor,
     points: u32,
 }
 
 impl Cow {
     pub fn value(&self) -> u32 {
         match self.color {
-            Color::Jersey => 1,
-            Color::Dutch => 2,
-            Color::Angus => 2,
-            Color::Guernsey => 2,
-            Color::Holstein => 3,
-            Color::Swiss => 3,
-            Color::Ayrshire => 3,
-            Color::Highland => 4,
-            Color::Longhorn => 5,
+            CowColor::Jersey => 1,
+            CowColor::Dutch => 2,
+            CowColor::Angus => 2,
+            CowColor::Guernsey => 2,
+            CowColor::Holstein => 3,
+            CowColor::Swiss => 3,
+            CowColor::Ayrshire => 3,
+            CowColor::Highland => 4,
+            CowColor::Longhorn => 5,
         }
     }
 }
 
-#[derive(Copy, Clone)]
-pub struct Objective<'a> {
-    immediate: Action<'a>,
+pub enum ObjectiveRequirements {
+    Building,
+    Hazard,
+    SanFran,
+    GreenTepee,
+    BlueTepee,
+    PlacedDisc,
+    Cow(u32),
+}
+
+#[derive(Copy, Clone, Serialize, Deserialize, Debug)]
+pub struct Objective {
+    immediate: ActionTag,
     success_pts: u32,
     fail_pts: u32,
 }
 
-impl<'a> Objective<'a> {
+impl Objective {
     fn meets_requirements(&self, player: Player) -> bool {
         panic!("Not implemented");
     }

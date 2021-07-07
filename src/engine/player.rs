@@ -1,24 +1,25 @@
-use crate::actions::Action;
+
+use serde::{Serialize, Deserialize};
 use crate::deck::Objective;
 use crate::buildings::Building;
 
-#[derive(Copy, Clone)]
+#[derive(Copy, Clone, Serialize, Deserialize, Debug)]
 pub enum Employee {
     Cowboy = 0,
     Craftsman = 1,
     Engineer = 2,
 }
 
-#[derive(Clone)]
-pub struct Player<'a> {
+#[derive(Clone, Serialize, Deserialize, Debug)]
+pub struct Player {
     dollars: u32,
     hired: [u32; 3],
-    buildings: Vec<Building<'a>>,
-    playedObjectives: Vec<Objective<'a>>,
+    buildings: Vec<Building>,
+    playedObjectives: Vec<Objective>,
 }
 
-impl<'a> Player<'a> {
-    pub fn new(turnPos: u32, playerBuildings: Vec<Building<'a>>) -> Player<'a> {
+impl Player {
+    pub fn new(turnPos: u32, playerBuildings: Vec<Building>) -> Player {
         return Player {
             dollars: turnPos + 6,
             hired: [0; 3],
