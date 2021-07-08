@@ -1,12 +1,15 @@
 
 use serde::{Serialize, Deserialize};
+use serde::de::DeserializeOwned;
 
 #[derive(Copy, Clone, Serialize, Deserialize, Debug)]
-pub struct Or<T: Copy, const LENGTH: usize> {
+pub struct Or<T, const LENGTH: usize>
+where [Option<T>; LENGTH]: Serialize + DeserializeOwned {
     pub items: [Option<T>; LENGTH],
 }
 
-impl<T: Copy, const LENGTH: usize> Or<T, LENGTH> {
+impl<T: Copy + Clone, const LENGTH: usize> Or<T, LENGTH>
+where [Option<T>; LENGTH]: Serialize + DeserializeOwned {
     pub fn new(items: &[T]) -> Or<T, LENGTH> {
         if items.len() > LENGTH {
             panic!("input is too long")
@@ -26,11 +29,13 @@ impl<T: Copy, const LENGTH: usize> Or<T, LENGTH> {
 }
 
 #[derive(Copy, Clone, Serialize, Deserialize, Debug)]
-pub struct XOr<T: Copy, const LENGTH: usize> {
+pub struct XOr<T, const LENGTH: usize>
+where [Option<T>; LENGTH]: Serialize + DeserializeOwned {
     pub items: [Option<T>; LENGTH],
 }
 
-impl<T: Copy, const LENGTH: usize> XOr<T, LENGTH> {
+impl<T: Copy + Clone, const LENGTH: usize> XOr<T, LENGTH>
+where [Option<T>; LENGTH]: Serialize + DeserializeOwned {
     pub fn new(items: &[T]) -> XOr<T, LENGTH> {
         if items.len() > LENGTH {
             panic!("input is too long")
@@ -49,11 +54,13 @@ impl<T: Copy, const LENGTH: usize> XOr<T, LENGTH> {
 }
 
 #[derive(Copy, Clone, Serialize, Deserialize, Debug)]
-pub struct And<T: Copy, const LENGTH: usize> {
+pub struct And<T, const LENGTH: usize>
+where [Option<T>; LENGTH]: Serialize + DeserializeOwned {
     pub items: [Option<T>; LENGTH],
 }
 
-impl<T: Copy, const LENGTH: usize> And<T, LENGTH> {
+impl<T: Copy + Clone, const LENGTH: usize> And<T, LENGTH>
+where [Option<T>; LENGTH]: Serialize + DeserializeOwned {
     pub fn new(items: &[T]) -> And<T, LENGTH> {
         if items.len() > LENGTH {
             panic!("input is too long")
@@ -73,11 +80,13 @@ impl<T: Copy, const LENGTH: usize> And<T, LENGTH> {
 }
 
 #[derive(Copy, Clone, Serialize, Deserialize, Debug)]
-pub struct NAnd<T: Copy, const LENGTH: usize> {
+pub struct NAnd<T, const LENGTH: usize>
+where [Option<T>; LENGTH]: Serialize + DeserializeOwned {
     pub items: [Option<T>; LENGTH],
 }
 
-impl<T: Copy, const LENGTH: usize> NAnd<T, LENGTH> {
+impl<T: Copy + Clone, const LENGTH: usize> NAnd<T, LENGTH>
+where [Option<T>; LENGTH]: Serialize + DeserializeOwned {
     pub fn new(items: &[T]) -> NAnd<T, LENGTH> {
         if items.len() > LENGTH {
             panic!("input is too long")

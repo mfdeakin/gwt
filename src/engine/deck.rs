@@ -1,9 +1,9 @@
 
 use serde::{Serialize, Deserialize};
-use crate::actions::{Action, ActionTag};
+use crate::actions::ActionTag;
 use crate::player::Player;
-use crate::logical::And;
 
+#[derive(Copy, Clone, Serialize, Deserialize, Debug)]
 pub enum Card {
     Cow(Cow),
     Objective(Objective),
@@ -44,6 +44,7 @@ impl Cow {
     }
 }
 
+#[derive(Copy, Clone, Serialize, Deserialize, Debug)]
 pub enum ObjectiveRequirements {
     Building,
     Hazard,

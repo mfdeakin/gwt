@@ -5,7 +5,7 @@ use crate::deck::{Cow, Objective, Card, CowColor};
 use crate::buildings::{Tepee, Hazard, Building};
 
 #[derive(Copy, Clone, Serialize, Deserialize, Debug)]
-pub enum Action<'a> {
+pub enum Action {
     PayCoins(i32),
     BuyCow(Cow),
     Buy2Cows(Cow, Cow),
@@ -15,19 +15,19 @@ pub enum Action<'a> {
     FillHand,
     DrawCards(Option<u32>),
     DiscardCards(Option<u32>),
-    TrashCard(Option<&'a Card>),
+    TrashCard(Option<Card>),
     MoveCattleman(Option<i32>),
     MoveEngine(Option<i32>),
     MoveCertificate(Option<i32>), // Prestige, Pedigree, whatever it's called...
     MaxCertificate,
     TakeTepee(Option<Tepee>),
     TakeHazard(Option<Hazard>),
-    TakeObjective(Option<&'a Objective>),
+    TakeObjective(Option<Objective>),
     TakeStationmaster(Option<Employee>),
     RemoveDisc(Option<u32>),
     PlaceDisc(Option<u32>),
     HireEmployee(Option<Employee>),
-    PlaceBuilding(Option<u32>, Option<&'a Building>),
+    PlaceBuilding(Option<u32>, Option<Building>),
     Auxiliary1,
     Auxiliary2
 }
@@ -60,7 +60,7 @@ pub enum ActionTag {
     MoveCattleman(ActionValues),
     TeleportCattleman(ActionValues),
     MoveEngine(ActionValues),
-    MoveCertificate(ActionValues), //
+    MoveCertificate(ActionValues),
     TakeTepee,
     TakeHazard,
     TakeObjective,
