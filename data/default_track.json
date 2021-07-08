@@ -1,0 +1,885 @@
+[
+  {
+    "occupant": "Start",
+    "nextSpace": [
+      1,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Building": {
+        "risk_action": {
+          "items": [
+            null,
+            null,
+            null
+          ]
+        },
+        "building": null,
+        "neutral": true
+      }
+    },
+    "nextSpace": [
+      2,
+      5
+    ]
+  },
+  {
+    "occupant": {
+      "Building": {
+        "risk_action": {
+          "items": [
+            null,
+            null,
+            null
+          ]
+        },
+        "building": null,
+        "neutral": false
+      }
+    },
+    "nextSpace": [
+      3,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Building": {
+        "risk_action": {
+          "items": [
+            null,
+            null,
+            null
+          ]
+        },
+        "building": null,
+        "neutral": false
+      }
+    },
+    "nextSpace": [
+      4,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Building": {
+        "risk_action": {
+          "items": [
+            null,
+            null,
+            null
+          ]
+        },
+        "building": null,
+        "neutral": false
+      }
+    },
+    "nextSpace": [
+      11,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Hazard": [
+        "Flood",
+        null
+      ]
+    },
+    "nextSpace": [
+      6,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Hazard": [
+        "Flood",
+        null
+      ]
+    },
+    "nextSpace": [
+      7,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Hazard": [
+        "Flood",
+        null
+      ]
+    },
+    "nextSpace": [
+      8,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Hazard": [
+        "Flood",
+        null
+      ]
+    },
+    "nextSpace": [
+      9,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Building": {
+        "risk_action": {
+          "items": [
+            {
+              "DiscardCard": {
+                "Color": "Jersey"
+              }
+            },
+            {
+              "TakeCoins": {
+                "Exact": 2
+              }
+            },
+            {
+              "MoveCertificate": {
+                "Exact": 1
+              }
+            }
+          ]
+        },
+        "building": null,
+        "neutral": false
+      }
+    },
+    "nextSpace": [
+      10,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Building": {
+        "risk_action": {
+          "items": [
+            {
+              "DiscardCard": {
+                "Color": "Jersey"
+              }
+            },
+            {
+              "TakeCoins": {
+                "Exact": 2
+              }
+            },
+            {
+              "MoveCertificate": {
+                "Exact": 1
+              }
+            }
+          ]
+        },
+        "building": null,
+        "neutral": false
+      }
+    },
+    "nextSpace": [
+      11,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Building": {
+        "risk_action": {
+          "items": [
+            null,
+            null,
+            null
+          ]
+        },
+        "building": null,
+        "neutral": true
+      }
+    },
+    "nextSpace": [
+      12,
+      15
+    ]
+  },
+  {
+    "occupant": {
+      "Building": {
+        "risk_action": {
+          "items": [
+            null,
+            null,
+            null
+          ]
+        },
+        "building": null,
+        "neutral": false
+      }
+    },
+    "nextSpace": [
+      13,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Building": {
+        "risk_action": {
+          "items": [
+            null,
+            null,
+            null
+          ]
+        },
+        "building": null,
+        "neutral": false
+      }
+    },
+    "nextSpace": [
+      14,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Building": {
+        "risk_action": {
+          "items": [
+            null,
+            null,
+            null
+          ]
+        },
+        "building": null,
+        "neutral": false
+      }
+    },
+    "nextSpace": [
+      20,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Hazard": [
+        "Drought",
+        null
+      ]
+    },
+    "nextSpace": [
+      16,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Hazard": [
+        "Drought",
+        null
+      ]
+    },
+    "nextSpace": [
+      17,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Hazard": [
+        "Drought",
+        null
+      ]
+    },
+    "nextSpace": [
+      18,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Hazard": [
+        "Drought",
+        null
+      ]
+    },
+    "nextSpace": [
+      19,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Building": {
+        "risk_action": {
+          "items": [
+            {
+              "DiscardCard": "AnyCow"
+            },
+            {
+              "MoveCertificate": {
+                "Exact": 1
+              }
+            },
+            null
+          ]
+        },
+        "building": null,
+        "neutral": false
+      }
+    },
+    "nextSpace": [
+      20,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Building": {
+        "risk_action": {
+          "items": [
+            null,
+            null,
+            null
+          ]
+        },
+        "building": null,
+        "neutral": true
+      }
+    },
+    "nextSpace": [
+      21,
+      23
+    ]
+  },
+  {
+    "occupant": {
+      "Building": {
+        "risk_action": {
+          "items": [
+            null,
+            null,
+            null
+          ]
+        },
+        "building": null,
+        "neutral": false
+      }
+    },
+    "nextSpace": [
+      22,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Building": {
+        "risk_action": {
+          "items": [
+            null,
+            null,
+            null
+          ]
+        },
+        "building": null,
+        "neutral": false
+      }
+    },
+    "nextSpace": [
+      33,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Building": {
+        "risk_action": {
+          "items": [
+            null,
+            null,
+            null
+          ]
+        },
+        "building": null,
+        "neutral": false
+      }
+    },
+    "nextSpace": [
+      24,
+      25
+    ]
+  },
+  {
+    "occupant": {
+      "Building": {
+        "risk_action": {
+          "items": [
+            null,
+            null,
+            null
+          ]
+        },
+        "building": null,
+        "neutral": true
+      }
+    },
+    "nextSpace": [
+      33,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Tepee": [
+        1,
+        null
+      ]
+    },
+    "nextSpace": [
+      26,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Tepee": [
+        2,
+        null
+      ]
+    },
+    "nextSpace": [
+      27,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Tepee": [
+        4,
+        null
+      ]
+    },
+    "nextSpace": [
+      28,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Tepee": [
+        6,
+        null
+      ]
+    },
+    "nextSpace": [
+      29,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Tepee": [
+        8,
+        null
+      ]
+    },
+    "nextSpace": [
+      30,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Tepee": [
+        10,
+        null
+      ]
+    },
+    "nextSpace": [
+      31,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Building": {
+        "risk_action": {
+          "items": [
+            {
+              "DiscardCard": "AnyCow"
+            },
+            {
+              "MoveCertificate": {
+                "Exact": 1
+              }
+            },
+            null
+          ]
+        },
+        "building": null,
+        "neutral": false
+      }
+    },
+    "nextSpace": [
+      32,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Building": {
+        "risk_action": {
+          "items": [
+            {
+              "DiscardCard": {
+                "Color": "Jersey"
+              }
+            },
+            {
+              "TakeCoins": {
+                "Exact": 2
+              }
+            },
+            {
+              "MoveCertificate": {
+                "Exact": 1
+              }
+            }
+          ]
+        },
+        "building": null,
+        "neutral": false
+      }
+    },
+    "nextSpace": [
+      33,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Building": {
+        "risk_action": {
+          "items": [
+            null,
+            null,
+            null
+          ]
+        },
+        "building": null,
+        "neutral": true
+      }
+    },
+    "nextSpace": [
+      34,
+      36
+    ]
+  },
+  {
+    "occupant": {
+      "Building": {
+        "risk_action": {
+          "items": [
+            null,
+            null,
+            null
+          ]
+        },
+        "building": null,
+        "neutral": false
+      }
+    },
+    "nextSpace": [
+      35,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Building": {
+        "risk_action": {
+          "items": [
+            null,
+            null,
+            null
+          ]
+        },
+        "building": null,
+        "neutral": false
+      }
+    },
+    "nextSpace": [
+      42,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Hazard": [
+        "Rockfall",
+        null
+      ]
+    },
+    "nextSpace": [
+      37,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Hazard": [
+        "Rockfall",
+        null
+      ]
+    },
+    "nextSpace": [
+      38,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Hazard": [
+        "Rockfall",
+        null
+      ]
+    },
+    "nextSpace": [
+      39,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Hazard": [
+        "Rockfall",
+        null
+      ]
+    },
+    "nextSpace": [
+      40,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Building": {
+        "risk_action": {
+          "items": [
+            {
+              "DiscardCard": "AnyCow"
+            },
+            {
+              "MoveCertificate": {
+                "Exact": 1
+              }
+            },
+            null
+          ]
+        },
+        "building": null,
+        "neutral": false
+      }
+    },
+    "nextSpace": [
+      41,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Building": {
+        "risk_action": {
+          "items": [
+            {
+              "DiscardCard": {
+                "Color": "Jersey"
+              }
+            },
+            {
+              "TakeCoins": {
+                "Exact": 2
+              }
+            },
+            {
+              "MoveCertificate": {
+                "Exact": 1
+              }
+            }
+          ]
+        },
+        "building": null,
+        "neutral": false
+      }
+    },
+    "nextSpace": [
+      42,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Building": {
+        "risk_action": {
+          "items": [
+            null,
+            null,
+            null
+          ]
+        },
+        "building": null,
+        "neutral": true
+      }
+    },
+    "nextSpace": [
+      43,
+      44
+    ]
+  },
+  {
+    "occupant": {
+      "Building": {
+        "risk_action": {
+          "items": [
+            null,
+            null,
+            null
+          ]
+        },
+        "building": null,
+        "neutral": false
+      }
+    },
+    "nextSpace": [
+      45,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Building": {
+        "risk_action": {
+          "items": [
+            null,
+            null,
+            null
+          ]
+        },
+        "building": null,
+        "neutral": false
+      }
+    },
+    "nextSpace": [
+      45,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Building": {
+        "risk_action": {
+          "items": [
+            null,
+            null,
+            null
+          ]
+        },
+        "building": null,
+        "neutral": true
+      }
+    },
+    "nextSpace": [
+      46,
+      47
+    ]
+  },
+  {
+    "occupant": {
+      "Building": {
+        "risk_action": {
+          "items": [
+            null,
+            null,
+            null
+          ]
+        },
+        "building": null,
+        "neutral": false
+      }
+    },
+    "nextSpace": [
+      48,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Building": {
+        "risk_action": {
+          "items": [
+            null,
+            null,
+            null
+          ]
+        },
+        "building": null,
+        "neutral": false
+      }
+    },
+    "nextSpace": [
+      48,
+      null
+    ]
+  },
+  {
+    "occupant": "KansasCity",
+    "nextSpace": [
+      null,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Tepee": [
+        -3,
+        null
+      ]
+    },
+    "nextSpace": [
+      null,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Tepee": [
+        -2,
+        null
+      ]
+    },
+    "nextSpace": [
+      null,
+      null
+    ]
+  },
+  {
+    "occupant": {
+      "Tepee": [
+        -1,
+        null
+      ]
+    },
+    "nextSpace": [
+      null,
+      null
+    ]
+  }
+]

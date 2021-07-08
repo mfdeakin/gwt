@@ -1,0 +1,331 @@
+[
+  {
+    "owner": 0,
+    "toll": "NoToll",
+    "actions": {
+      "items": [
+        {
+          "items": [
+            {
+              "items": [
+                {
+                  "DiscardCard": {
+                    "Color": "Guernsey"
+                  }
+                },
+                {
+                  "TakeCoins": {
+                    "Exact": 2
+                  }
+                },
+                null
+              ]
+            },
+            null
+          ]
+        },
+        {
+          "items": [
+            {
+              "items": [
+                {
+                  "HireEmployee": {
+                    "Exact": 0
+                  }
+                },
+                null,
+                null
+              ]
+            },
+            null
+          ]
+        },
+        {
+          "items": [
+            {
+              "items": [
+                {
+                  "HireEmployee": {
+                    "Exact": -2
+                  }
+                },
+                null,
+                null
+              ]
+            },
+            null
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "owner": 0,
+    "toll": "NoToll",
+    "actions": {
+      "items": [
+        {
+          "items": [
+            {
+              "items": [
+                {
+                  "DiscardCard": {
+                    "Color": "Dutch"
+                  }
+                },
+                {
+                  "TakeCoins": {
+                    "Exact": 2
+                  }
+                },
+                null
+              ]
+            },
+            null
+          ]
+        },
+        {
+          "items": [
+            {
+              "items": [
+                {
+                  "PlaceBuilding": {
+                    "EmployeeMult": [
+                      "Craftsman",
+                      -2
+                    ]
+                  }
+                },
+                null,
+                null
+              ]
+            },
+            null
+          ]
+        },
+        null
+      ]
+    }
+  },
+  {
+    "owner": 0,
+    "toll": "NoToll",
+    "actions": {
+      "items": [
+        {
+          "items": [
+            {
+              "items": [
+                {
+                  "MoveCertificate": {
+                    "Exact": 1
+                  }
+                },
+                null,
+                null
+              ]
+            },
+            {
+              "items": [
+                "TakeObjective",
+                null,
+                null
+              ]
+            }
+          ]
+        },
+        {
+          "items": [
+            {
+              "items": [
+                {
+                  "MoveEngine": {
+                    "EmployeeMult": [
+                      "Engineer",
+                      1
+                    ]
+                  }
+                },
+                null,
+                null
+              ]
+            },
+            null
+          ]
+        },
+        null
+      ]
+    }
+  },
+  {
+    "owner": 0,
+    "toll": "NoToll",
+    "actions": {
+      "items": [
+        {
+          "items": [
+            {
+              "items": [
+                "TakeTepee",
+                null,
+                null
+              ]
+            },
+            {
+              "items": [
+                {
+                  "TakeCoins": {
+                    "Exact": -2
+                  }
+                },
+                {
+                  "MoveEngine": {
+                    "Exact": 2
+                  }
+                },
+                null
+              ]
+            }
+          ]
+        },
+        {
+          "items": [
+            {
+              "items": [
+                "DoubleAuxiliary",
+                null,
+                null
+              ]
+            },
+            null
+          ]
+        },
+        null
+      ]
+    }
+  },
+  {
+    "owner": 0,
+    "toll": "NoToll",
+    "actions": {
+      "items": [
+        {
+          "items": [
+            {
+              "items": [
+                {
+                  "DiscardCard": {
+                    "Color": "Angus"
+                  }
+                },
+                {
+                  "TakeCoins": {
+                    "Exact": 2
+                  }
+                },
+                null
+              ]
+            },
+            null
+          ]
+        },
+        {
+          "items": [
+            {
+              "items": [
+                "BuyCows",
+                null,
+                null
+              ]
+            },
+            null
+          ]
+        },
+        null
+      ]
+    }
+  },
+  {
+    "owner": 0,
+    "toll": "NoToll",
+    "actions": {
+      "items": [
+        {
+          "items": [
+            {
+              "items": [
+                {
+                  "DiscardCard": "PairCow"
+                },
+                {
+                  "TakeCoins": {
+                    "Exact": 4
+                  }
+                },
+                null
+              ]
+            },
+            null
+          ]
+        },
+        {
+          "items": [
+            {
+              "items": [
+                {
+                  "TakeCoins": {
+                    "Exact": -7
+                  }
+                },
+                "TakeHazard",
+                null
+              ]
+            },
+            null
+          ]
+        },
+        null
+      ]
+    }
+  },
+  {
+    "owner": 0,
+    "toll": "NoToll",
+    "actions": {
+      "items": [
+        {
+          "items": [
+            {
+              "items": [
+                {
+                  "MoveEngine": {
+                    "EmployeeMult": [
+                      "Engineer",
+                      1
+                    ]
+                  }
+                },
+                null,
+                null
+              ]
+            },
+            null
+          ]
+        },
+        {
+          "items": [
+            {
+              "items": [
+                "DoubleAuxiliary",
+                null,
+                null
+              ]
+            },
+            null
+          ]
+        },
+        null
+      ]
+    }
+  }
+]

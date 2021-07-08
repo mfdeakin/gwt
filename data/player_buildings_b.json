@@ -1,0 +1,281 @@
+[
+  {
+    "owner": 0,
+    "toll": "Green",
+    "actions": {
+      "items": [
+        {
+          "items": [
+            {
+              "items": [
+                {
+                  "DiscardCard": "Objective"
+                },
+                {
+                  "MoveCertificate": {
+                    "Exact": 2
+                  }
+                },
+                null
+              ]
+            },
+            null
+          ]
+        },
+        {
+          "items": [
+            {
+              "items": [
+                {
+                  "MoveEngine": {
+                    "Exact": -1
+                  }
+                },
+                {
+                  "TakeCoins": {
+                    "Exact": 3
+                  }
+                },
+                null
+              ]
+            },
+            null
+          ]
+        },
+        null
+      ]
+    }
+  },
+  {
+    "owner": 0,
+    "toll": "NoToll",
+    "actions": {
+      "items": [
+        {
+          "items": [
+            {
+              "items": [
+                {
+                  "DiscardCard": {
+                    "Color": "Jersey"
+                  }
+                },
+                {
+                  "MoveEngine": {
+                    "Exact": 1
+                  }
+                },
+                null
+              ]
+            },
+            null
+          ]
+        },
+        {
+          "items": [
+            {
+              "items": [
+                {
+                  "DiscardCard": {
+                    "Color": "Dutch"
+                  }
+                },
+                {
+                  "TakeCoins": {
+                    "Exact": 3
+                  }
+                },
+                null
+              ]
+            },
+            null
+          ]
+        },
+        null
+      ]
+    }
+  },
+  {
+    "owner": 0,
+    "toll": "NoToll",
+    "actions": {
+      "items": [
+        {
+          "items": [
+            {
+              "items": [
+                "DoubleAuxiliary",
+                null,
+                null
+              ]
+            },
+            null
+          ]
+        },
+        {
+          "items": [
+            {
+              "items": [
+                {
+                  "MoveCattleman": {
+                    "Exact": 1
+                  }
+                },
+                null,
+                null
+              ]
+            },
+            null
+          ]
+        },
+        null
+      ]
+    }
+  },
+  {
+    "owner": 0,
+    "toll": "Black",
+    "actions": {
+      "items": [
+        {
+          "items": [
+            {
+              "items": [
+                {
+                  "DrawCards": {
+                    "EmployeeMult": [
+                      "Cowboy",
+                      1
+                    ]
+                  }
+                },
+                null,
+                null
+              ]
+            },
+            null
+          ]
+        },
+        {
+          "items": [
+            {
+              "items": [
+                {
+                  "MoveCattleman": {
+                    "Exact": 3
+                  }
+                },
+                null,
+                null
+              ]
+            },
+            null
+          ]
+        },
+        null
+      ]
+    }
+  },
+  {
+    "owner": 0,
+    "toll": "NoToll",
+    "actions": {
+      "items": [
+        {
+          "items": [
+            {
+              "items": [
+                {
+                  "DiscardCard": {
+                    "Color": "Angus"
+                  }
+                },
+                {
+                  "MoveCertificate": {
+                    "Exact": 2
+                  }
+                },
+                null
+              ]
+            },
+            null
+          ]
+        },
+        {
+          "items": [
+            {
+              "items": [
+                {
+                  "TakeCoins": {
+                    "EmployeeMult": [
+                      "Engineer",
+                      1
+                    ]
+                  }
+                },
+                null,
+                null
+              ]
+            },
+            null
+          ]
+        },
+        null
+      ]
+    }
+  },
+  {
+    "owner": 0,
+    "toll": "NoToll",
+    "actions": {
+      "items": [
+        {
+          "items": [
+            {
+              "items": [
+                {
+                  "DiscardCard": "AnyCow"
+                },
+                {
+                  "TakeCoins": {
+                    "Exact": 3
+                  }
+                },
+                "TakeObjective"
+              ]
+            },
+            null
+          ]
+        },
+        null,
+        null
+      ]
+    }
+  },
+  {
+    "owner": 0,
+    "toll": "GreenBlack",
+    "actions": {
+      "items": [
+        {
+          "items": [
+            {
+              "items": [
+                {
+                  "MoveEngine": {
+                    "ForestMult": 1
+                  }
+                },
+                null,
+                null
+              ]
+            },
+            null
+          ]
+        },
+        null,
+        null
+      ]
+    }
+  }
+]
