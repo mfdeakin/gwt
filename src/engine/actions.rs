@@ -4,7 +4,7 @@ use crate::player::{Employee};
 use crate::deck::{Cow, Objective, Card, CowColor};
 use crate::buildings::{Tepee, Hazard, Building};
 
-#[derive(Copy, Clone, Serialize, Deserialize, Debug)]
+#[derive(Copy, Clone, Eq, PartialEq, Serialize, Deserialize, Debug)]
 pub enum Action {
     PayCoins(i32),
     BuyCow(Cow),
@@ -32,14 +32,15 @@ pub enum Action {
     Auxiliary2
 }
 
-#[derive(Copy, Clone, Serialize, Deserialize, Debug)]
-pub enum SellCowOpts {
-    Any,
+#[derive(Copy, Clone, Eq, PartialEq, Serialize, Deserialize, Debug)]
+pub enum DiscardCardOpts {
+    AnyCow,
     Color(CowColor),
-    Pair,
+    PairCow,
+    Objective,
 }
 
-#[derive(Copy, Clone, Serialize, Deserialize, Debug)]
+#[derive(Copy, Clone, Eq, PartialEq, Serialize, Deserialize, Debug)]
 pub enum ActionValues {
     Exact(i32),
     EmployeeMult(Employee, i32), // Multiplier based on the number of a type of hired employee
@@ -50,11 +51,11 @@ pub enum ActionValues {
     Max,
 }
 
-#[derive(Copy, Clone, Serialize, Deserialize, Debug)]
+#[derive(Copy, Clone, Eq, PartialEq, Serialize, Deserialize, Debug)]
 pub enum ActionTag {
-    PayCoins(ActionValues),
+    TakeCoins(ActionValues),
     BuyCows,
-    SellCow(SellCowOpts),
+    DiscardCard(DiscardCardOpts),
     DrawCards(ActionValues),
     TrashCard,
     MoveCattleman(ActionValues),
@@ -69,6 +70,7 @@ pub enum ActionTag {
     PlaceBuilding(ActionValues),
     CityDiscMoveTrain,
     StationDiscBehindTrain,
+    AdjacentBuilding,
     Auxiliary,
     DoubleAuxiliary,
 }

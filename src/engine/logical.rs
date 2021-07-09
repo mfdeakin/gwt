@@ -2,7 +2,7 @@
 use serde::{Serialize, Deserialize};
 use serde::de::DeserializeOwned;
 
-#[derive(Copy, Clone, Serialize, Deserialize, Debug)]
+#[derive(Copy, Clone, Eq, PartialEq, Serialize, Deserialize, Debug)]
 pub struct Or<T, const LENGTH: usize>
 where [Option<T>; LENGTH]: Serialize + DeserializeOwned {
     pub items: [Option<T>; LENGTH],
@@ -28,7 +28,7 @@ where [Option<T>; LENGTH]: Serialize + DeserializeOwned {
     }
 }
 
-#[derive(Copy, Clone, Serialize, Deserialize, Debug)]
+#[derive(Copy, Clone, Eq, PartialEq, Serialize, Deserialize, Debug)]
 pub struct XOr<T, const LENGTH: usize>
 where [Option<T>; LENGTH]: Serialize + DeserializeOwned {
     pub items: [Option<T>; LENGTH],
@@ -53,7 +53,7 @@ where [Option<T>; LENGTH]: Serialize + DeserializeOwned {
     }
 }
 
-#[derive(Copy, Clone, Serialize, Deserialize, Debug)]
+#[derive(Copy, Clone, Eq, PartialEq, Serialize, Deserialize, Debug)]
 pub struct And<T, const LENGTH: usize>
 where [Option<T>; LENGTH]: Serialize + DeserializeOwned {
     pub items: [Option<T>; LENGTH],
@@ -79,7 +79,7 @@ where [Option<T>; LENGTH]: Serialize + DeserializeOwned {
     }
 }
 
-#[derive(Copy, Clone, Serialize, Deserialize, Debug)]
+#[derive(Copy, Clone, Eq, PartialEq, Serialize, Deserialize, Debug)]
 pub struct NAnd<T, const LENGTH: usize>
 where [Option<T>; LENGTH]: Serialize + DeserializeOwned {
     pub items: [Option<T>; LENGTH],

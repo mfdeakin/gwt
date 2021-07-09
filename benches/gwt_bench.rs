@@ -1,3 +1,4 @@
+#![allow(non_snake_case)]
 
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
 use std::f32;

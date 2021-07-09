@@ -1,34 +1,42 @@
 
 use serde::{Serialize, Deserialize};
-use crate::actions::{ActionTag, SellCowOpts, ActionValues};
+use crate::actions::{ActionTag, DiscardCardOpts, ActionValues};
 use crate::logical::{And, Or, XOr};
 use crate::deck::CowColor;
 use crate::player::Employee;
 
-#[derive(Copy, Clone, Serialize, Deserialize, Debug)]
+#[derive(Copy, Clone, Eq, PartialEq, Serialize, Deserialize, Debug)]
+pub enum Toll {
+    NoToll,
+    Green,
+    Black,
+    GreenBlack,
+}
+
+#[derive(Copy, Clone, Eq, PartialEq, Serialize, Deserialize, Debug)]
 pub enum Tepee {
     Green,
     Blue,
 }
 
-#[derive(Copy, Clone, Serialize, Deserialize, Debug)]
+#[derive(Copy, Clone, Eq, PartialEq, Serialize, Deserialize, Debug)]
 pub enum HazardType {
     Flood,
     Drought,
     Rockfall,
 }
 
-#[derive(Copy, Clone, Serialize, Deserialize, Debug)]
+#[derive(Copy, Clone, Eq, PartialEq, Serialize, Deserialize, Debug)]
 pub struct Hazard {
     area: HazardType,
-    toll: u32,
+    toll: Toll,
     points: u32,
 }
 
-#[derive(Copy, Clone, Serialize, Deserialize, Debug)]
+#[derive(Copy, Clone, Eq, PartialEq, Serialize, Deserialize, Debug)]
 pub struct Building {
     owner: u32,
-    toll: u32,
+    toll: Toll,
     actions: Or<XOr<And<ActionTag, 3>, 2>, 3>,
 }
 
@@ -38,8 +46,8 @@ impl Building {
             match num {
                 0 => Or::new(&[
                     XOr::new(&[And::new(&[
-                        ActionTag::SellCow(SellCowOpts::Color(CowColor::Guernsey)),
-                        ActionTag::PayCoins(ActionValues::Exact(2)),
+                        ActionTag::DiscardCard(DiscardCardOpts::Color(CowColor::Guernsey)),
+                        ActionTag::TakeCoins(ActionValues::Exact(2)),
                     ]), ]),
                     XOr::new(&[And::new(&[
                         ActionTag::HireEmployee(ActionValues::Exact(0)),
@@ -50,8 +58,8 @@ impl Building {
                 ]),
                 1 => Or::new(&[
                     XOr::new(&[And::new(&[
-                        ActionTag::SellCow(SellCowOpts::Color(CowColor::Dutch)),
-                        ActionTag::PayCoins(ActionValues::Exact(2)),
+                        ActionTag::DiscardCard(DiscardCardOpts::Color(CowColor::Dutch)),
+                        ActionTag::TakeCoins(ActionValues::Exact(2)),
                     ]), ]),
                     XOr::new(&[And::new(&[
                         ActionTag::PlaceBuilding(ActionValues::EmployeeMult(Employee::Craftsman, -2)),
@@ -70,7 +78,7 @@ impl Building {
                     XOr::new(&[
                         And::new(&[ActionTag::TakeTepee, ]),
                         And::new(&[
-                            ActionTag::PayCoins(ActionValues::Exact(-2)),
+                            ActionTag::TakeCoins(ActionValues::Exact(-2)),
                             ActionTag::MoveEngine(ActionValues::Exact(2))
                         ]),
                     ]),
@@ -79,8 +87,8 @@ impl Building {
                 ]),
                 4 => Or::new(&[
                     XOr::new(&[And::new(&[
-                        ActionTag::SellCow(SellCowOpts::Color(CowColor::Angus)),
-                        ActionTag::PayCoins(ActionValues::Exact(2)),
+                        ActionTag::DiscardCard(DiscardCardOpts::Color(CowColor::Angus)),
+                        ActionTag::TakeCoins(ActionValues::Exact(2)),
                     ]), ]),
                     XOr::new(&[And::new(&[
                         ActionTag::BuyCows,
@@ -88,11 +96,11 @@ impl Building {
                 ]),
                 5 => Or::new(&[
                     XOr::new(&[And::new(&[
-                        ActionTag::SellCow(SellCowOpts::Pair),
-                        ActionTag::PayCoins(ActionValues::Exact(4)),
+                        ActionTag::DiscardCard(DiscardCardOpts::PairCow),
+                        ActionTag::TakeCoins(ActionValues::Exact(4)),
                     ]), ]),
                     XOr::new(&[And::new(&[
-                        ActionTag::PayCoins(ActionValues::Exact(-7)),
+                        ActionTag::TakeCoins(ActionValues::Exact(-7)),
                         ActionTag::TakeHazard,
                     ]), ]),
                 ]),
@@ -106,6 +114,197 @@ impl Building {
                 _ => panic!("Invalid building specified"),
             }
         };
-        Building { owner: 0, toll: 0, actions }
+        Building { owner: 0, toll: Toll::NoToll, actions }
+    }
+
+    pub fn playerBuilding(num: u32, side_b: bool) -> Building {
+        let actions =
+            {
+                if !side_b {
+                    match num {
+                        0 => Or::new(&[
+                            XOr::new(&[And::new(&[
+                                ActionTag::TakeCoins(ActionValues::ForestMult(2)),
+                            ]), ]),
+                        ]),
+                        1 => Or::new(&[
+                            XOr::new(&[And::new(&[
+                                ActionTag::DiscardCard(DiscardCardOpts::Color(CowColor::Guernsey)),
+                                ActionTag::TakeCoins(ActionValues::Exact(4)),
+                            ]), ]),
+                            XOr::new(&[And::new(&[
+                                ActionTag::BuyCows,
+                            ]), ]),
+                        ]),
+                        2 => Or::new(&[
+                            XOr::new(&[And::new(&[
+                                ActionTag::DiscardCard(DiscardCardOpts::PairCow),
+                                ActionTag::TakeCoins(ActionValues::Exact(3)),
+                            ]), ]),
+                            XOr::new(&[And::new(&[
+                                ActionTag::MoveCattleman(ActionValues::Exact(1)),
+                            ]), ]),
+                        ]),
+                        3 => Or::new(&[
+                            XOr::new(&[And::new(&[
+                                ActionTag::TakeCoins(ActionValues::Exact(-5)),
+                                ActionTag::TakeHazard,
+                            ]), ]),
+                            XOr::new(&[And::new(&[
+                                ActionTag::MoveCattleman(ActionValues::Exact(2)),
+                            ]), ]),
+                        ]),
+                        4 => Or::new(&[
+                            XOr::new(&[And::new(&[
+                                ActionTag::HireEmployee(ActionValues::Exact(1)),
+                            ]), ]),
+                            XOr::new(&[And::new(&[
+                                ActionTag::MoveEngine(ActionValues::EmployeeMult(Employee::Engineer, 1)),
+                            ]), ]),
+                        ]),
+                        5 => Or::new(&[
+                            XOr::new(&[And::new(&[
+                                ActionTag::DiscardCard(DiscardCardOpts::Color(CowColor::Holstein)),
+                                ActionTag::TakeCoins(ActionValues::Exact(10)),
+                            ]), ]),
+                            XOr::new(&[And::new(&[
+                                ActionTag::DoubleAuxiliary,
+                            ]), ]),
+                        ]),
+                        6 => Or::new(&[
+                            XOr::new(&[And::new(&[
+                                ActionTag::MoveCertificate(ActionValues::TepeePairMult(2)),
+                                ActionTag::TakeCoins(ActionValues::TepeePairMult(2)),
+                            ]), ]),
+                        ]),
+                        7 => Or::new(&[
+                            XOr::new(&[And::new(&[
+                                ActionTag::TakeTepee,
+                            ]), And::new(&[
+                                ActionTag::DoubleAuxiliary,
+                            ]), ]),
+                            XOr::new(&[And::new(&[
+                                ActionTag::MoveEngine(ActionValues::Exact(2)),
+                            ]), ]),
+                        ]),
+                        8 => Or::new(&[
+                            XOr::new(&[And::new(&[
+                                ActionTag::MoveEngine(ActionValues::Exact(3)),
+                            ]), ]),
+                            XOr::new(&[And::new(&[
+                                ActionTag::CityDiscMoveTrain,
+                            ]), ]),
+                        ]),
+                        9 => Or::new(&[
+                            XOr::new(&[And::new(&[
+                                ActionTag::MoveCertificate(ActionValues::Max),
+                            ]), ]),
+                            XOr::new(&[And::new(&[
+                                ActionTag::MoveCattleman(ActionValues::Exact(5)),
+                            ]), ]),
+                        ]),
+                        _ => panic!("Invalid building specified")
+                    }
+                }
+                else {
+                    match num {
+                        0 => Or::new(&[
+                            XOr::new(&[And::new(&[
+                                ActionTag::DiscardCard(DiscardCardOpts::Objective),
+                                ActionTag::MoveCertificate(ActionValues::Exact(2)),
+                            ]), ]),
+                            XOr::new(&[And::new(&[
+                                ActionTag::MoveEngine(ActionValues::Exact(-1)),
+                                ActionTag::TakeCoins(ActionValues::Exact(3)),
+                            ]), ]),
+                        ]),
+                        1 => Or::new(&[
+                            XOr::new(&[And::new(&[
+                                ActionTag::DiscardCard(DiscardCardOpts::Color(CowColor::Jersey)),
+                                ActionTag::MoveEngine(ActionValues::Exact(1)),
+                            ]), ]),
+                            XOr::new(&[And::new(&[
+                                ActionTag::DiscardCard(DiscardCardOpts::Color(CowColor::Dutch)),
+                                ActionTag::TakeCoins(ActionValues::Exact(3)),
+                            ]), ]),
+                        ]),
+                        2 => Or::new(&[
+                            XOr::new(&[And::new(&[
+                                ActionTag::DoubleAuxiliary,
+                            ]), ]),
+                            XOr::new(&[And::new(&[
+                                ActionTag::MoveCattleman(ActionValues::Exact(1)),
+                            ]), ]),
+                        ]),
+                        3 => Or::new(&[
+                            XOr::new(&[And::new(&[
+                                ActionTag::DrawCards(ActionValues::EmployeeMult(Employee::Cowboy, 1)),
+                            ]), ]),
+                            XOr::new(&[And::new(&[
+                                ActionTag::MoveCattleman(ActionValues::Exact(3)),
+                            ]), ]),
+                        ]),
+                        4 => Or::new(&[
+                            XOr::new(&[And::new(&[
+                                ActionTag::DiscardCard(DiscardCardOpts::Color(CowColor::Angus)),
+                                ActionTag::MoveCertificate(ActionValues::Exact(2)),
+                            ]), ]),
+                            XOr::new(&[And::new(&[
+                                ActionTag::TakeCoins(ActionValues::EmployeeMult(Employee::Engineer, 1)),
+                            ]), ]),
+                        ]),
+                        5 => Or::new(&[
+                            XOr::new(&[And::new(&[
+                                ActionTag::DiscardCard(DiscardCardOpts::AnyCow),
+                                ActionTag::TakeCoins(ActionValues::Exact(3)),
+                                ActionTag::TakeObjective,
+                            ]), ]),
+                        ]),
+                        6 => Or::new(&[
+                            XOr::new(&[And::new(&[
+                                ActionTag::MoveEngine(ActionValues::ForestMult(1)),
+                            ]), ]),
+                        ]),
+                        7 => Or::new(&[
+                            XOr::new(&[And::new(&[
+                                ActionTag::AdjacentBuilding,
+                            ]), ]),
+                        ]),
+                        8 => Or::new(&[
+                            XOr::new(&[And::new(&[
+                                ActionTag::StationDiscBehindTrain,
+                            ]), ]),
+                        ]),
+                        9 => Or::new(&[
+                            XOr::new(&[And::new(&[
+                                ActionTag::TakeCoins(ActionValues::Exact(4)),
+                            ]), ]),
+                            XOr::new(&[And::new(&[
+                                ActionTag::MoveEngine(ActionValues::Exact(4)),
+                            ]), ]),
+                            XOr::new(&[And::new(&[
+                                ActionTag::MoveCattleman(ActionValues::Exact(4)),
+                            ]), ]),
+                        ]),
+                        _ => panic!("Invalid building specified")
+                    }
+                }
+            };
+        let toll = {
+            match num {
+                0 => Toll::Green,
+                1 => Toll::NoToll,
+                2 => Toll::NoToll,
+                3 => Toll::Black,
+                4 => Toll::NoToll,
+                5 => Toll::NoToll,
+                6 => Toll::GreenBlack,
+                7 => if !side_b { Toll::Green } else { Toll::NoToll },
+                8 => Toll::NoToll,
+                9 => Toll::Black,
+                _ => panic!("Invalid building specified")
+            }
+        };
+        Building { owner: 0, toll, actions }
     }
 }
