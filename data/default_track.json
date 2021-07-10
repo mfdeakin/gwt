@@ -17,7 +17,8 @@
           ]
         },
         "building": null,
-        "neutral": true
+        "neutral": true,
+        "forest": false
       }
     },
     "nextSpace": [
@@ -36,7 +37,8 @@
           ]
         },
         "building": null,
-        "neutral": false
+        "neutral": false,
+        "forest": false
       }
     },
     "nextSpace": [
@@ -55,7 +57,8 @@
           ]
         },
         "building": null,
-        "neutral": false
+        "neutral": false,
+        "forest": false
       }
     },
     "nextSpace": [
@@ -74,7 +77,8 @@
           ]
         },
         "building": null,
-        "neutral": false
+        "neutral": false,
+        "forest": false
       }
     },
     "nextSpace": [
@@ -153,7 +157,8 @@
           ]
         },
         "building": null,
-        "neutral": false
+        "neutral": false,
+        "forest": false
       }
     },
     "nextSpace": [
@@ -184,7 +189,8 @@
           ]
         },
         "building": null,
-        "neutral": false
+        "neutral": false,
+        "forest": true
       }
     },
     "nextSpace": [
@@ -203,7 +209,8 @@
           ]
         },
         "building": null,
-        "neutral": true
+        "neutral": true,
+        "forest": false
       }
     },
     "nextSpace": [
@@ -222,7 +229,8 @@
           ]
         },
         "building": null,
-        "neutral": false
+        "neutral": false,
+        "forest": true
       }
     },
     "nextSpace": [
@@ -241,7 +249,8 @@
           ]
         },
         "building": null,
-        "neutral": false
+        "neutral": false,
+        "forest": false
       }
     },
     "nextSpace": [
@@ -260,7 +269,8 @@
           ]
         },
         "building": null,
-        "neutral": false
+        "neutral": false,
+        "forest": false
       }
     },
     "nextSpace": [
@@ -333,7 +343,8 @@
           ]
         },
         "building": null,
-        "neutral": false
+        "neutral": false,
+        "forest": false
       }
     },
     "nextSpace": [
@@ -352,7 +363,8 @@
           ]
         },
         "building": null,
-        "neutral": true
+        "neutral": true,
+        "forest": false
       }
     },
     "nextSpace": [
@@ -371,7 +383,8 @@
           ]
         },
         "building": null,
-        "neutral": false
+        "neutral": false,
+        "forest": true
       }
     },
     "nextSpace": [
@@ -390,7 +403,8 @@
           ]
         },
         "building": null,
-        "neutral": false
+        "neutral": false,
+        "forest": true
       }
     },
     "nextSpace": [
@@ -409,7 +423,8 @@
           ]
         },
         "building": null,
-        "neutral": false
+        "neutral": false,
+        "forest": false
       }
     },
     "nextSpace": [
@@ -428,7 +443,8 @@
           ]
         },
         "building": null,
-        "neutral": true
+        "neutral": true,
+        "forest": false
       }
     },
     "nextSpace": [
@@ -525,7 +541,8 @@
           ]
         },
         "building": null,
-        "neutral": false
+        "neutral": false,
+        "forest": false
       }
     },
     "nextSpace": [
@@ -556,7 +573,8 @@
           ]
         },
         "building": null,
-        "neutral": false
+        "neutral": false,
+        "forest": false
       }
     },
     "nextSpace": [
@@ -575,7 +593,8 @@
           ]
         },
         "building": null,
-        "neutral": true
+        "neutral": true,
+        "forest": false
       }
     },
     "nextSpace": [
@@ -594,7 +613,8 @@
           ]
         },
         "building": null,
-        "neutral": false
+        "neutral": false,
+        "forest": true
       }
     },
     "nextSpace": [
@@ -613,7 +633,8 @@
           ]
         },
         "building": null,
-        "neutral": false
+        "neutral": false,
+        "forest": true
       }
     },
     "nextSpace": [
@@ -686,7 +707,8 @@
           ]
         },
         "building": null,
-        "neutral": false
+        "neutral": false,
+        "forest": false
       }
     },
     "nextSpace": [
@@ -717,7 +739,8 @@
           ]
         },
         "building": null,
-        "neutral": false
+        "neutral": false,
+        "forest": true
       }
     },
     "nextSpace": [
@@ -736,7 +759,8 @@
           ]
         },
         "building": null,
-        "neutral": true
+        "neutral": true,
+        "forest": false
       }
     },
     "nextSpace": [
@@ -755,7 +779,8 @@
           ]
         },
         "building": null,
-        "neutral": false
+        "neutral": false,
+        "forest": false
       }
     },
     "nextSpace": [
@@ -774,7 +799,8 @@
           ]
         },
         "building": null,
-        "neutral": false
+        "neutral": false,
+        "forest": false
       }
     },
     "nextSpace": [
@@ -793,7 +819,8 @@
           ]
         },
         "building": null,
-        "neutral": true
+        "neutral": true,
+        "forest": false
       }
     },
     "nextSpace": [
@@ -812,7 +839,8 @@
           ]
         },
         "building": null,
-        "neutral": false
+        "neutral": false,
+        "forest": false
       }
     },
     "nextSpace": [
@@ -831,7 +859,8 @@
           ]
         },
         "building": null,
-        "neutral": false
+        "neutral": false,
+        "forest": false
       }
     },
     "nextSpace": [

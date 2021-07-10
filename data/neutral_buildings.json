@@ -1,6 +1,8 @@
 [
   {
     "owner": 0,
+    "laborers": 0,
+    "points": 0,
     "toll": "NoToll",
     "actions": {
       "items": [
@@ -61,6 +63,8 @@
   },
   {
     "owner": 0,
+    "laborers": 0,
+    "points": 0,
     "toll": "NoToll",
     "actions": {
       "items": [
@@ -109,6 +113,8 @@
   },
   {
     "owner": 0,
+    "laborers": 0,
+    "points": 0,
     "toll": "NoToll",
     "actions": {
       "items": [
@@ -159,6 +165,8 @@
   },
   {
     "owner": 0,
+    "laborers": 0,
+    "points": 0,
     "toll": "NoToll",
     "actions": {
       "items": [
@@ -206,6 +214,8 @@
   },
   {
     "owner": 0,
+    "laborers": 0,
+    "points": 0,
     "toll": "NoToll",
     "actions": {
       "items": [
@@ -247,6 +257,8 @@
   },
   {
     "owner": 0,
+    "laborers": 0,
+    "points": 0,
     "toll": "NoToll",
     "actions": {
       "items": [
@@ -290,6 +302,8 @@
   },
   {
     "owner": 0,
+    "laborers": 0,
+    "points": 0,
     "toll": "NoToll",
     "actions": {
       "items": [

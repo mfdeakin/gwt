@@ -36,6 +36,8 @@ pub struct Hazard {
 #[derive(Copy, Clone, Eq, PartialEq, Serialize, Deserialize, Debug)]
 pub struct Building {
     owner: u32,
+    laborers: u32,
+    points: u32,
     toll: Toll,
     actions: Or<XOr<And<ActionTag, 3>, 2>, 3>,
 }
@@ -114,7 +116,7 @@ impl Building {
                 _ => panic!("Invalid building specified"),
             }
         };
-        Building { owner: 0, toll: Toll::NoToll, actions }
+        Building { owner: 0, laborers: 0, points: 0, toll: Toll::NoToll, actions }
     }
 
     pub fn playerBuilding(num: u32, side_b: bool) -> Building {
@@ -305,6 +307,32 @@ impl Building {
                 _ => panic!("Invalid building specified")
             }
         };
-        Building { owner: 0, toll, actions }
+        let laborers = match num {
+            0 => 1,
+            1 => 1,
+            2 => if !side_b { 1 } else { 2 },
+            3 => 2,
+            4 => 3,
+            5 => 4,
+            6 => 5,
+            7 => if !side_b { 5 } else { 6 },
+            8 => if !side_b { 7 } else { 6 },
+            9 => if !side_b { 9 } else { 8 },
+            _ => panic!("Invalid building specified")
+        };
+        let points = match num {
+            0 => 1,
+            1 => 1,
+            2 => if !side_b { 1 } else { 3 },
+            3 => 3,
+            4 => 4,
+            5 => 5,
+            6 => 6,
+            7 => if !side_b { 6 } else { 8 },
+            8 => if !side_b { 9 } else { 8 },
+            9 => if !side_b { 13 } else { 11 },
+            _ => panic!("Invalid building specified")
+        };
+        Building { owner: 0, laborers, points, toll, actions }
     }
 }
