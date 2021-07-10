@@ -1,0 +1,58 @@
+[
+  {
+    "immediate": null,
+    "success_pts": 3,
+    "fail_pts": 0,
+    "requirements": {
+      "items": [
+        {
+          "Cow": 3
+        },
+        {
+          "Cow": 4
+        },
+        "Building",
+        null
+      ]
+    }
+  },
+  {
+    "immediate": null,
+    "success_pts": 3,
+    "fail_pts": 0,
+    "requirements": {
+      "items": [
+        "BlueTepee",
+        "Hazard",
+        "Hazard",
+        null
+      ]
+    }
+  },
+  {
+    "immediate": null,
+    "success_pts": 3,
+    "fail_pts": 0,
+    "requirements": {
+      "items": [
+        "StationDisc",
+        "StationDisc",
+        "GreenTepee",
+        null
+      ]
+    }
+  },
+  {
+    "immediate": null,
+    "success_pts": 3,
+    "fail_pts": 0,
+    "requirements": {
+      "items": [
+        "Building",
+        "Building",
+        "Hazard",
+        null
+      ]
+    }
+  }
+]
