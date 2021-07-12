@@ -1,0 +1,430 @@
+[
+  {
+    "immediate": "DoubleAuxiliary",
+    "success_pts": 5,
+    "fail_pts": 3,
+    "requirements": {
+      "items": [
+        "SanFran",
+        null,
+        null,
+        null
+      ]
+    }
+  },
+  {
+    "immediate": "DoubleAuxiliary",
+    "success_pts": 5,
+    "fail_pts": 3,
+    "requirements": {
+      "items": [
+        "SanFran",
+        null,
+        null,
+        null
+      ]
+    }
+  },
+  {
+    "immediate": "DoubleAuxiliary",
+    "success_pts": 5,
+    "fail_pts": 3,
+    "requirements": {
+      "items": [
+        "SanFran",
+        null,
+        null,
+        null
+      ]
+    }
+  },
+  {
+    "immediate": "DoubleAuxiliary",
+    "success_pts": 5,
+    "fail_pts": 3,
+    "requirements": {
+      "items": [
+        "SanFran",
+        null,
+        null,
+        null
+      ]
+    }
+  },
+  {
+    "immediate": {
+      "DrawCards": {
+        "Exact": 3
+      }
+    },
+    "success_pts": 4,
+    "fail_pts": 2,
+    "requirements": {
+      "items": [
+        {
+          "Cow": 3
+        },
+        {
+          "Cow": 3
+        },
+        {
+          "Cow": 3
+        },
+        "StationDisc"
+      ]
+    }
+  },
+  {
+    "immediate": {
+      "TakeCoins": {
+        "Exact": 2
+      }
+    },
+    "success_pts": 4,
+    "fail_pts": 2,
+    "requirements": {
+      "items": [
+        {
+          "Cow": 3
+        },
+        {
+          "Cow": 3
+        },
+        {
+          "Cow": 3
+        },
+        "Building"
+      ]
+    }
+  },
+  {
+    "immediate": {
+      "MoveEngine": {
+        "Exact": 2
+      }
+    },
+    "success_pts": 5,
+    "fail_pts": 3,
+    "requirements": {
+      "items": [
+        {
+          "Cow": 3
+        },
+        {
+          "Cow": 4
+        },
+        {
+          "Cow": 5
+        },
+        null
+      ]
+    }
+  },
+  {
+    "immediate": {
+      "TeleportCattleman": {
+        "Exact": 3
+      }
+    },
+    "success_pts": 5,
+    "fail_pts": 2,
+    "requirements": {
+      "items": [
+        {
+          "Cow": 3
+        },
+        {
+          "Cow": 4
+        },
+        {
+          "Cow": 5
+        },
+        null
+      ]
+    }
+  },
+  {
+    "immediate": {
+      "TeleportCattleman": {
+        "Exact": 3
+      }
+    },
+    "success_pts": 5,
+    "fail_pts": 2,
+    "requirements": {
+      "items": [
+        {
+          "Cow": 3
+        },
+        {
+          "Cow": 4
+        },
+        "Hazard",
+        "Hazard"
+      ]
+    }
+  },
+  {
+    "immediate": {
+      "TakeCoins": {
+        "Exact": 2
+      }
+    },
+    "success_pts": 3,
+    "fail_pts": 2,
+    "requirements": {
+      "items": [
+        {
+          "Cow": 4
+        },
+        "Hazard",
+        "Hazard",
+        null
+      ]
+    }
+  },
+  {
+    "immediate": {
+      "MoveEngine": {
+        "Exact": 2
+      }
+    },
+    "success_pts": 5,
+    "fail_pts": 3,
+    "requirements": {
+      "items": [
+        {
+          "Cow": 4
+        },
+        {
+          "Cow": 4
+        },
+        "StationDisc",
+        "GreenTepee"
+      ]
+    }
+  },
+  {
+    "immediate": {
+      "DrawCards": {
+        "Exact": 3
+      }
+    },
+    "success_pts": 3,
+    "fail_pts": 2,
+    "requirements": {
+      "items": [
+        {
+          "Cow": 5
+        },
+        "Hazard",
+        null,
+        null
+      ]
+    }
+  },
+  {
+    "immediate": {
+      "TakeCoins": {
+        "Exact": 2
+      }
+    },
+    "success_pts": 3,
+    "fail_pts": 2,
+    "requirements": {
+      "items": [
+        "StationDisc",
+        "StationDisc",
+        "Hazard",
+        null
+      ]
+    }
+  },
+  {
+    "immediate": {
+      "MoveEngine": {
+        "Exact": 3
+      }
+    },
+    "success_pts": 5,
+    "fail_pts": 3,
+    "requirements": {
+      "items": [
+        "StationDisc",
+        "StationDisc",
+        "Hazard",
+        "Hazard"
+      ]
+    }
+  },
+  {
+    "immediate": {
+      "TeleportCattleman": {
+        "Exact": 3
+      }
+    },
+    "success_pts": 5,
+    "fail_pts": 2,
+    "requirements": {
+      "items": [
+        "StationDisc",
+        "StationDisc",
+        "Building",
+        "Building"
+      ]
+    }
+  },
+  {
+    "immediate": {
+      "TeleportCattleman": {
+        "Exact": 3
+      }
+    },
+    "success_pts": 5,
+    "fail_pts": 2,
+    "requirements": {
+      "items": [
+        "StationDisc",
+        "StationDisc",
+        "BlueTepee",
+        "BlueTepee"
+      ]
+    }
+  },
+  {
+    "immediate": {
+      "DrawCards": {
+        "Exact": 3
+      }
+    },
+    "success_pts": 3,
+    "fail_pts": 2,
+    "requirements": {
+      "items": [
+        "StationDisc",
+        "GreenTepee",
+        "GreenTepee",
+        null
+      ]
+    }
+  },
+  {
+    "immediate": {
+      "DrawCards": {
+        "Exact": 3
+      }
+    },
+    "success_pts": 3,
+    "fail_pts": 2,
+    "requirements": {
+      "items": [
+        "StationDisc",
+        "GreenTepee",
+        "BlueTepee",
+        null
+      ]
+    }
+  },
+  {
+    "immediate": {
+      "DrawCards": {
+        "Exact": 3
+      }
+    },
+    "success_pts": 3,
+    "fail_pts": 2,
+    "requirements": {
+      "items": [
+        "Building",
+        "Building",
+        "Hazard",
+        null
+      ]
+    }
+  },
+  {
+    "immediate": {
+      "TeleportCattleman": {
+        "Exact": 3
+      }
+    },
+    "success_pts": 5,
+    "fail_pts": 2,
+    "requirements": {
+      "items": [
+        "Building",
+        "Building",
+        "Hazard",
+        "Hazard"
+      ]
+    }
+  },
+  {
+    "immediate": {
+      "MoveEngine": {
+        "Exact": 2
+      }
+    },
+    "success_pts": 5,
+    "fail_pts": 3,
+    "requirements": {
+      "items": [
+        "Building",
+        "Building",
+        "GreenTepee",
+        "GreenTepee"
+      ]
+    }
+  },
+  {
+    "immediate": {
+      "MoveEngine": {
+        "Exact": 3
+      }
+    },
+    "success_pts": 5,
+    "fail_pts": 3,
+    "requirements": {
+      "items": [
+        "Building",
+        "BlueTepee",
+        "Hazard",
+        "Hazard"
+      ]
+    }
+  },
+  {
+    "immediate": {
+      "TakeCoins": {
+        "Exact": 2
+      }
+    },
+    "success_pts": 3,
+    "fail_pts": 2,
+    "requirements": {
+      "items": [
+        "Building",
+        "BlueTepee",
+        "BlueTepee",
+        null
+      ]
+    }
+  },
+  {
+    "immediate": {
+      "TakeCoins": {
+        "Exact": 2
+      }
+    },
+    "success_pts": 3,
+    "fail_pts": 2,
+    "requirements": {
+      "items": [
+        "Building",
+        "GreenTepee",
+        "BlueTepee",
+        null
+      ]
+    }
+  }
+]
