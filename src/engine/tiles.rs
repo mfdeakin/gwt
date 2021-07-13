@@ -1,7 +1,7 @@
-
 use serde::{Serialize, Deserialize};
 use crate::buildings::{HazardType, Hazard, Tepee, Toll};
 use crate::player::Employee;
+use std::collections::vec_deque::Iter;
 
 // https://github.com/rust-lang/rust/issues/83574
 // use std::iter::zip;
@@ -32,7 +32,7 @@ impl Foresight {
         let removed = self.current;
         self.current = self.next;
         // Use zip here when available
-        for i in 0 .. self.piles.len() {
+        for i in 0..self.piles.len() {
             self.next[i] = self.piles[i].pop().unwrap_or(Tile::BlankTile);
         }
         removed
@@ -67,12 +67,20 @@ impl Foresight {
     }
 }
 
+
+#[derive(Copy, Clone, Eq, PartialEq, Serialize, Deserialize, Debug)]
+pub enum JobMarketEvent {
+    NoEvent,
+    RefillCowMarket,
+    FinalRound,
+}
+
 #[derive(Clone, Eq, PartialEq, Serialize, Deserialize, Debug)]
 pub struct JobMarket {
-    employees: Vec<Tile>,
-    cost: [u32; JobMarket::NUM_ROWS],
-    refresh_cow_market: Vec<u32>,
-    game_end: u32,
+    employees: Vec<Employee>,
+    cost: [i32; JobMarket::NUM_ROWS],
+    refresh_cow_market: Vec<usize>,
+    game_end: usize,
     num_cols: usize,
 }
 
@@ -80,10 +88,46 @@ impl JobMarket {
     const NUM_ROWS: usize = 12;
 
     fn new(num_players: usize) -> JobMarket {
-        JobMarket { employees: Vec::<Tile>::with_capacity(JobMarket::NUM_ROWS * num_players), cost: JobMarket::defaultRowCost(), refresh_cow_market: vec![6, 9], game_end: 12, num_cols: num_players }
+        JobMarket { employees: Vec::<Employee>::with_capacity(JobMarket::NUM_ROWS * num_players), cost: JobMarket::defaultRowSalary(), refresh_cow_market: vec![6, 9], game_end: 12, num_cols: num_players }
     }
 
-    fn defaultRowCost() -> [u32; JobMarket::NUM_ROWS] {
+    fn addEmployee(&mut self, emp: Employee) -> JobMarketEvent {
+        self.employees.push(emp);
+        for row in self.refresh_cow_market.iter() {
+            if self.employees.len() / self.num_cols == *row && self.employees.len() % self.num_cols == 0 {
+                return JobMarketEvent::RefillCowMarket;
+            }
+        }
+        if self.employees.len() / self.num_cols == self.game_end && self.employees.len() % self.num_cols == 0 {
+            return JobMarketEvent::FinalRound;
+        }
+        let i = self.refresh_cow_market.iter();
+        return JobMarketEvent::NoEvent;
+    }
+
+    fn salary(&self, emp_idx: usize) -> i32 {
+        let idx = emp_idx / self.num_cols;
+        self.cost[idx]
+    }
+
+    pub fn findEmployees(&self, emp: Employee) -> Vec<(i32, &Employee)> {
+        let mut salaries : Vec<(i32, &Employee)> = self.employees.iter()
+            .filter(|check_emp| { **check_emp == emp })
+            .enumerate()
+            .map(|v| { (self.salary(v.0), v.1) })
+            .collect();
+        salaries.sort_unstable_by_key(|a| a.0);
+        salaries.dedup();
+        salaries
+    }
+
+    fn defaultRowSalary() -> [i32; JobMarket::NUM_ROWS] {
         [6, 6, 7, 5, 7, 9, 6, 8, 10, 6, 5, 4]
     }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::player::Employee;
 }
