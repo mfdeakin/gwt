@@ -1,7 +1,7 @@
+
 use serde::{Serialize, Deserialize};
 use crate::buildings::{HazardType, Hazard, Tepee, Toll};
 use crate::player::Employee;
-use std::collections::vec_deque::Iter;
 
 // https://github.com/rust-lang/rust/issues/83574
 // use std::iter::zip;
@@ -77,7 +77,7 @@ pub enum JobMarketEvent {
 
 #[derive(Clone, Eq, PartialEq, Serialize, Deserialize, Debug)]
 pub struct JobMarket {
-    employees: Vec<Employee>,
+    employees: Vec<Option<Employee>>,
     cost: [i32; JobMarket::NUM_ROWS],
     refresh_cow_market: Vec<usize>,
     game_end: usize,
@@ -87,12 +87,12 @@ pub struct JobMarket {
 impl JobMarket {
     const NUM_ROWS: usize = 12;
 
-    fn new(num_players: usize) -> JobMarket {
-        JobMarket { employees: Vec::<Employee>::with_capacity(JobMarket::NUM_ROWS * num_players), cost: JobMarket::defaultRowSalary(), refresh_cow_market: vec![6, 9], game_end: 12, num_cols: num_players }
+    pub fn new(num_players: usize) -> JobMarket {
+        JobMarket { employees: Vec::<Option<Employee>>::with_capacity(JobMarket::NUM_ROWS * num_players), cost: JobMarket::defaultRowSalary(), refresh_cow_market: vec![6, 9], game_end: 12, num_cols: num_players }
     }
 
-    fn addEmployee(&mut self, emp: Employee) -> JobMarketEvent {
-        self.employees.push(emp);
+    pub fn addEmployee(&mut self, emp: Employee) -> JobMarketEvent {
+        self.employees.push(Some(emp));
         for row in self.refresh_cow_market.iter() {
             if self.employees.len() / self.num_cols == *row && self.employees.len() % self.num_cols == 0 {
                 return JobMarketEvent::RefillCowMarket;
@@ -101,23 +101,43 @@ impl JobMarket {
         if self.employees.len() / self.num_cols == self.game_end && self.employees.len() % self.num_cols == 0 {
             return JobMarketEvent::FinalRound;
         }
-        let i = self.refresh_cow_market.iter();
         return JobMarketEvent::NoEvent;
+    }
+
+    pub fn hireEmployee(&mut self, emp: Employee, salary: i32) -> Result<(), String> {
+       for (i, e) in self.employees.iter().enumerate() {
+            if *e == Some(emp) && self.salary(i) == salary {
+                self.employees[i] = None;
+                return Ok(());
+            }
+        }
+        return Err("No employee found".to_string());
     }
 
     fn salary(&self, emp_idx: usize) -> i32 {
         let idx = emp_idx / self.num_cols;
-        self.cost[idx]
+        if idx < self.cost.len() {
+            self.cost[idx]
+        } else {
+            1_000_000_000 // An amount of money no player will ever have...
+        }
     }
 
-    pub fn findEmployees(&self, emp: Employee) -> Vec<(i32, &Employee)> {
-        let mut salaries : Vec<(i32, &Employee)> = self.employees.iter()
-            .filter(|check_emp| { **check_emp == emp })
+    pub fn findEmployees(&self, emp: Employee) -> Vec<(i32, usize)> {
+        let mut salaries: Vec<(i32, usize)> = self.employees.iter()
             .enumerate()
-            .map(|v| { (self.salary(v.0), v.1) })
+            .filter(|check_emp| {
+                // #62358 <https://github.com/rust-lang/rust/issues/62358>
+                // *(*check_emp).1.contains(emp)
+                match *(*check_emp).1 {
+                    Some(check) => check == emp,
+                    _ => false
+                }
+            })
+            .map(|v| { (self.salary(v.0), v.0) })
             .collect();
         salaries.sort_unstable_by_key(|a| a.0);
-        salaries.dedup();
+        salaries.dedup_by_key(|a| a.0);
         salaries
     }
 
@@ -130,4 +150,68 @@ impl JobMarket {
 mod tests {
     use super::*;
     use crate::player::Employee;
+
+    #[test]
+    fn testJobMarket1() {
+        let mut market = JobMarket::new(1);
+        for _ in 0..5 {
+            assert_eq!(market.addEmployee(Employee::Engineer), JobMarketEvent::NoEvent);
+        }
+        assert_eq!(market.addEmployee(Employee::Engineer), JobMarketEvent::RefillCowMarket);
+        for _ in 0..2 {
+            assert_eq!(market.addEmployee(Employee::Cowboy), JobMarketEvent::NoEvent);
+        }
+        assert_eq!(market.addEmployee(Employee::Cowboy), JobMarketEvent::RefillCowMarket);
+        for _ in 0..2 {
+            assert_eq!(market.addEmployee(Employee::Cowboy), JobMarketEvent::NoEvent);
+        }
+        assert_eq!(market.addEmployee(Employee::Cowboy), JobMarketEvent::FinalRound);
+
+        let eng_salaries = vec![5, 6, 7, 9];
+        let eng_found = market.findEmployees(Employee::Engineer);
+        let cowboy_salaries = vec![4, 5, 6, 8, 10];
+        let cowboy_found = market.findEmployees(Employee::Cowboy);
+        let craft_salaries = Vec::<i32>::new();
+        let craft_found = market.findEmployees(Employee::Craftsman);
+        for (truth, check) in [
+            (eng_salaries, eng_found), (cowboy_salaries, cowboy_found), (craft_salaries, craft_found), ] {
+            assert_eq!(truth.len(), check.len());
+            for i in 0..truth.len() {
+                assert_eq!(truth[i], check[i].0);
+            }
+        }
+        assert_eq!(market.hireEmployee(Employee::Engineer, 5), Ok(()));
+        assert_ne!(market.hireEmployee(Employee::Engineer, 5), Ok(()));
+    }
+
+    #[test]
+    fn testJobMarket3() {
+        let mut market = JobMarket::new(3);
+        for _ in 0..17 {
+            assert_eq!(market.addEmployee(Employee::Engineer), JobMarketEvent::NoEvent);
+        }
+        assert_eq!(market.addEmployee(Employee::Engineer), JobMarketEvent::RefillCowMarket);
+        for _ in 0..8 {
+            assert_eq!(market.addEmployee(Employee::Cowboy), JobMarketEvent::NoEvent);
+        }
+        assert_eq!(market.addEmployee(Employee::Cowboy), JobMarketEvent::RefillCowMarket);
+        for _ in 0..8 {
+            assert_eq!(market.addEmployee(Employee::Cowboy), JobMarketEvent::NoEvent);
+        }
+        assert_eq!(market.addEmployee(Employee::Cowboy), JobMarketEvent::FinalRound);
+
+        let eng_salaries = vec![5, 6, 7, 9];
+        let eng_found = market.findEmployees(Employee::Engineer);
+        let cowboy_salaries = vec![4, 5, 6, 8, 10];
+        let cowboy_found = market.findEmployees(Employee::Cowboy);
+        let craft_salaries = Vec::<i32>::new();
+        let craft_found = market.findEmployees(Employee::Craftsman);
+        for (truth, check) in [
+            (eng_salaries, eng_found), (cowboy_salaries, cowboy_found), (craft_salaries, craft_found), ] {
+            assert_eq!(truth.len(), check.len());
+            for i in 0..truth.len() {
+                assert_eq!(truth[i], check[i].0);
+            }
+        }
+    }
 }
