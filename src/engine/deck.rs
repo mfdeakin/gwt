@@ -1,16 +1,158 @@
+
+use rand::{thread_rng, SeedableRng};
 use serde::{Serialize, Deserialize};
 use crate::actions::{ActionTag, ActionValues};
 use crate::player::Player;
 use crate::logical::And;
-use crate::buildings::Tepee::Blue;
+use std::mem::swap;
+use rand_pcg::Pcg64;
+use rand::prelude::SliceRandom;
+use crate::deck::Card::CowCard;
+use crate::deck::CowColor::Jersey;
 
 #[derive(Copy, Clone, Eq, PartialEq, Serialize, Deserialize, Debug)]
 pub enum Card {
-    Cow(Cow),
-    Objective(Objective),
+    CowCard(Cow),
+    ObjectiveCard(Objective),
 }
 
-#[derive(Copy, Clone, Eq, PartialEq, Serialize, Deserialize, Debug)]
+#[derive(Clone, Eq, PartialEq, Serialize, Deserialize, Debug)]
+pub struct Deck {
+    hand: Vec<Card>,
+    draw: Vec<Card>,
+    discard: Vec<Card>,
+    hand_size: usize,
+    rng: Pcg64,
+}
+
+impl Deck {
+    pub fn new_unshuffled(hand_size: usize, draw: Vec<Card>) -> Deck {
+        Deck {
+            hand: Vec::with_capacity(hand_size + 2),
+            draw,
+            discard: Vec::with_capacity(hand_size * 4),
+            hand_size,
+            rng: Pcg64::from_rng(thread_rng()).unwrap(),
+        }
+    }
+
+    pub fn new(hand_size: usize, pile: Vec<Card>) -> Deck {
+        let mut deck = Deck::new_unshuffled(hand_size, pile);
+        deck.draw.shuffle(&mut deck.rng);
+        deck
+    }
+
+    // Refills either to the hand limit, or until all cards are in the hand
+    pub fn refillHand(&mut self) {
+        while self.hand.len() < self.hand_size {
+            if self.drawCard() != Ok(()) {
+                break;
+            }
+        }
+    }
+
+    pub fn drawCard(&mut self) -> Result<(), String> {
+        if self.draw.len() == 0 && self.discard.len() > 0 {
+            self.shuffleDiscard();
+        }
+        if self.draw.len() > 0 {
+            self.hand.push(self.draw.pop().unwrap());
+            Result::Ok(())
+        } else {
+            Result::Err("No cards left to draw".to_string())
+        }
+    }
+
+    pub fn shuffleDiscard(&mut self) {
+        swap(&mut self.draw,&mut self.discard);
+        self.draw.shuffle(&mut self.rng);
+    }
+
+    pub fn addCard(&mut self, card: Card) {
+        self.discard.push(card);
+    }
+
+    pub fn trashCard(&mut self, card: Card) -> Result<(), String> {
+        match self.hand.iter().position(|c| { *c == card }) {
+            Some(idx) => { self.hand.remove(idx); Ok(()) }
+            None => Err("Card isn't in hand".to_string())
+        }
+    }
+
+    pub fn playCard(&mut self, card: Card) -> Result<(), String> {
+        match self.trashCard(card) {
+            Ok(()) => {
+                self.discard.push(card);
+                Ok(())
+            },
+            err => err
+        }
+    }
+
+    pub fn handValue(&self) -> u32 {
+        let mut cows: Vec<Cow> = self.hand.iter()
+            .filter(|card| { if let CowCard(_) = **card { true } else { false } })
+            .map(|cow_card| { if let CowCard(cow) = *cow_card { cow } else { unreachable!() } })
+            .collect();
+        if cows.len() > 0 {
+            cows.sort_by_key(|cow| { cow.color });
+            cows.dedup_by_key(|cow| { cow.color });
+            cows.iter().map(|cow| { cow.value() })
+                .reduce(|v1, v2| { v1 + v2 }).unwrap()
+        } else {
+            0
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::path::Path;
+    use std::fs;
+    use crate::deck::Card::CowCard;
+
+    #[test]
+    fn testDeck() {
+        let path = Path::new("./data/player_starting_deck.json");
+        let serialized = fs::read_to_string(path).unwrap();
+        let starting_cows : Vec<Cow> = serde_json::from_str(&serialized).unwrap();
+        let starting_deck = starting_cows.iter().map(|c| { CowCard(*c) }).collect();
+        let mut d = Deck::new_unshuffled(4, starting_deck);
+        assert_eq!(d.hand.len(), 0);
+        assert_eq!(d.draw.len(), starting_cows.len());
+        assert_eq!(d.discard.len(), 0);
+        d.refillHand();
+        // The initial hand is 3 angus cows and a guernsey;
+        // ie the last 4 listed in the starting deck file
+        assert_eq!(d.hand.len(), d.hand_size);
+        assert_eq!(d.draw.len(), starting_cows.len() - d.hand_size);
+        assert_eq!(d.discard.len(), 0);
+        assert_eq!(d.handValue(), 4);
+        d.trashCard(Card::CowCard(Cow::new(CowColor::Jersey, 0)));
+        assert_eq!(d.hand.len(), d.hand_size);
+        assert_eq!(d.draw.len(), starting_cows.len() - d.hand_size);
+        assert_eq!(d.discard.len(), 0);
+        assert_eq!(d.handValue(), 4);
+        d.trashCard(Card::CowCard(Cow::new(CowColor::Angus, 0)));
+        assert_eq!(d.hand.len(), d.hand_size - 1);
+        assert_eq!(d.draw.len(), starting_cows.len() - d.hand_size);
+        assert_eq!(d.discard.len(), 0);
+        assert_eq!(d.handValue(), 4);
+        d.playCard(Card::CowCard(Cow::new(CowColor::Angus, 0)));
+        assert_eq!(d.hand.len(), d.hand_size - 2);
+        assert_eq!(d.draw.len(), starting_cows.len() - d.hand_size);
+        assert_eq!(d.discard.len(), 1);
+        assert_eq!(d.handValue(), 4);
+        d.playCard(Card::CowCard(Cow::new(CowColor::Angus, 0)));
+        assert_eq!(d.hand.len(), d.hand_size - 3);
+        assert_eq!(d.draw.len(), starting_cows.len() - d.hand_size);
+        assert_eq!(d.discard.len(), 2);
+        assert_eq!(d.handValue(), 2);
+    }
+}
+
+#[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Serialize, Deserialize, Debug)]
 pub enum CowColor {
     Jersey,
     Dutch,
@@ -86,7 +228,7 @@ impl CowMarket {
         let ryb_market = Vec::<Cow>::new();
         let brown_market = Vec::<Cow>::new();
         let purple_market = Vec::<Cow>::new();
-        CowMarket { cow_deck: cow_deck, ryb_market: ryb_market, brown_market: brown_market, purple_market: purple_market }
+        CowMarket { cow_deck, ryb_market, brown_market, purple_market }
     }
 }
 
@@ -115,7 +257,7 @@ impl Objective {
         Objective { immediate, success_pts, fail_pts, requirements: And::new(requirements) }
     }
 
-    pub fn meetsRequirements(&self, player: Player) -> bool {
+    pub fn meetsRequirements(&self, player: &Player) -> bool {
         panic!("Not implemented");
     }
 
