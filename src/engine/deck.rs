@@ -7,8 +7,7 @@ use crate::logical::And;
 use std::mem::swap;
 use rand_pcg::Pcg64;
 use rand::prelude::SliceRandom;
-use crate::deck::Card::CowCard;
-use crate::deck::CowColor::Jersey;
+use crate::deck::Card::{CowCard, ObjectiveCard};
 
 #[derive(Copy, Clone, Eq, PartialEq, Serialize, Deserialize, Debug)]
 pub enum Card {
@@ -90,10 +89,7 @@ impl Deck {
     }
 
     pub fn handValue(&self) -> u32 {
-        let mut cows: Vec<Cow> = self.hand.iter()
-            .filter(|card| { if let CowCard(_) = **card { true } else { false } })
-            .map(|cow_card| { if let CowCard(cow) = *cow_card { cow } else { unreachable!() } })
-            .collect();
+        let mut cows = Deck::deckCowCards(&self.hand);
         if cows.len() > 0 {
             cows.sort_by_key(|cow| { cow.color });
             cows.dedup_by_key(|cow| { cow.color });
@@ -103,53 +99,72 @@ impl Deck {
             0
         }
     }
-}
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use std::path::Path;
-    use std::fs;
-    use crate::deck::Card::CowCard;
-
-    #[test]
-    fn testDeck() {
-        let path = Path::new("./data/player_starting_deck.json");
-        let serialized = fs::read_to_string(path).unwrap();
-        let starting_cows : Vec<Cow> = serde_json::from_str(&serialized).unwrap();
-        let starting_deck = starting_cows.iter().map(|c| { CowCard(*c) }).collect();
-        let mut d = Deck::new_unshuffled(4, starting_deck);
-        assert_eq!(d.hand.len(), 0);
-        assert_eq!(d.draw.len(), starting_cows.len());
-        assert_eq!(d.discard.len(), 0);
-        d.refillHand();
-        // The initial hand is 3 angus cows and a guernsey;
-        // ie the last 4 listed in the starting deck file
-        assert_eq!(d.hand.len(), d.hand_size);
-        assert_eq!(d.draw.len(), starting_cows.len() - d.hand_size);
-        assert_eq!(d.discard.len(), 0);
-        assert_eq!(d.handValue(), 4);
-        d.trashCard(Card::CowCard(Cow::new(CowColor::Jersey, 0)));
-        assert_eq!(d.hand.len(), d.hand_size);
-        assert_eq!(d.draw.len(), starting_cows.len() - d.hand_size);
-        assert_eq!(d.discard.len(), 0);
-        assert_eq!(d.handValue(), 4);
-        d.trashCard(Card::CowCard(Cow::new(CowColor::Angus, 0)));
-        assert_eq!(d.hand.len(), d.hand_size - 1);
-        assert_eq!(d.draw.len(), starting_cows.len() - d.hand_size);
-        assert_eq!(d.discard.len(), 0);
-        assert_eq!(d.handValue(), 4);
-        d.playCard(Card::CowCard(Cow::new(CowColor::Angus, 0)));
-        assert_eq!(d.hand.len(), d.hand_size - 2);
-        assert_eq!(d.draw.len(), starting_cows.len() - d.hand_size);
-        assert_eq!(d.discard.len(), 1);
-        assert_eq!(d.handValue(), 4);
-        d.playCard(Card::CowCard(Cow::new(CowColor::Angus, 0)));
-        assert_eq!(d.hand.len(), d.hand_size - 3);
-        assert_eq!(d.draw.len(), starting_cows.len() - d.hand_size);
-        assert_eq!(d.discard.len(), 2);
-        assert_eq!(d.handValue(), 2);
+    pub fn cowInHand(&self, color: CowColor) -> Option<Cow> {
+        let cows : Vec<Cow> = Deck::deckCowCards(&self.hand).iter()
+            .filter(|c| { (**c).color == color })
+            .map(|c| { *c })
+            .collect();
+        if cows.len() > 0 {
+            Some(cows[0])
+        } else {
+            None
+        }
     }
+
+    pub fn pairInHand(&self) -> Vec<CowColor> {
+        let mut cows: Vec<CowColor> = Deck::deckCowCards(&self.hand).iter()
+            .map(|c| { (*c).color })
+            .collect();
+        cows.sort();
+        let mut prev = cows.iter();
+        let mut dup_cow = Vec::<CowColor>::new();
+        for cur in prev.next() {
+            if *cur == prev[0] && !dup_cow.contains(*cur){
+                dup_cow.push(*cur);
+            }
+            prev = prev.next().unwrap();
+        }
+        dup_cow
+    }
+
+    pub fn cowCards(&self) -> Vec<Cow> {
+        Deck::deckCowCards(&self.hand).iter()
+            .chain(Deck::deckCowCards(&self.draw).iter())
+            .chain(Deck::deckCowCards(&self.discard).iter())
+            .map(|c| { *c })
+            .collect()
+    }
+
+    pub fn cowPoints(&self) -> u32 {
+        self.cowCards().iter()
+            .map(|c| { c.points })
+            .reduce(|a, b| { a + b })
+            .unwrap_or(0) // This person lost the game...
+    }
+
+    pub fn objectiveCards(&self) -> Vec<Objective> {
+        Deck::deckObjectiveCards(&self.hand).iter()
+            .chain(Deck::deckObjectiveCards(&self.draw).iter())
+            .chain(Deck::deckObjectiveCards(&self.discard).iter())
+            .map(|obj| { *obj })
+            .collect()
+    }
+
+    fn deckCowCards(cards: &Vec<Card>) -> Vec<Cow> {
+        cards.iter()
+            .filter(|card| { if let CowCard(_) = **card { true } else { false } })
+            .map(|cow_card| { if let CowCard(cow) = *cow_card { cow } else { unreachable!() } })
+            .collect()
+    }
+
+    fn deckObjectiveCards(cards: &Vec<Card>) -> Vec<Objective> {
+        cards.iter()
+            .filter(|card| { if let ObjectiveCard(_) = **card { true } else { false } })
+            .map(|obj_card| { if let ObjectiveCard(obj) = *obj_card { obj } else { unreachable!() } })
+            .collect()
+    }
+
 }
 
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Serialize, Deserialize, Debug)]
@@ -316,5 +331,78 @@ impl Objective {
             Objective::new(take_coins, 3, 2, &[Building, BlueTepee, BlueTepee,]),
             Objective::new(take_coins, 3, 2, &[Building, GreenTepee, BlueTepee,]),
         ]
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::path::Path;
+    use std::fs;
+    use crate::deck::Card::CowCard;
+
+    #[test]
+    fn testDeck() {
+        let path = Path::new("./data/player_starting_deck.json");
+        let serialized = fs::read_to_string(path).unwrap();
+        let starting_cows : Vec<Cow> = serde_json::from_str(&serialized).unwrap();
+        let starting_deck = starting_cows.iter().map(|c| { CowCard(*c) }).collect();
+        let mut d = Deck::new_unshuffled(4, starting_deck);
+        assert_eq!(d.hand.len(), 0);
+        assert_eq!(d.draw.len(), starting_cows.len());
+        assert_eq!(d.discard.len(), 0);
+        d.refillHand();
+        // The initial hand is 3 angus cows and a guernsey;
+        // ie the last 4 listed in the starting deck file
+        assert_eq!(d.hand.len(), d.hand_size);
+        assert_eq!(d.draw.len(), starting_cows.len() - d.hand_size);
+        assert_eq!(d.discard.len(), 0);
+        assert_eq!(d.cowPoints(), 0);
+        assert_eq!(d.handValue(), 4);
+
+        assert_ne!(d.trashCard(Card::CowCard(Cow::new(CowColor::Jersey, 0))), Ok(()));
+        assert_eq!(d.hand.len(), d.hand_size);
+        assert_eq!(d.draw.len(), starting_cows.len() - d.hand_size);
+        assert_eq!(d.discard.len(), 0);
+        assert_eq!(d.cowPoints(), 0);
+        assert_eq!(d.handValue(), 4);
+
+        assert_eq!(d.trashCard(Card::CowCard(Cow::new(CowColor::Angus, 0))), Ok(()));
+        assert_eq!(d.hand.len(), d.hand_size - 1);
+        assert_eq!(d.draw.len(), starting_cows.len() - d.hand_size);
+        assert_eq!(d.discard.len(), 0);
+        assert_eq!(d.cowPoints(), 0);
+        assert_eq!(d.handValue(), 4);
+
+        assert_eq!(d.playCard(Card::CowCard(Cow::new(CowColor::Angus, 0))), Ok(()));
+        assert_eq!(d.hand.len(), d.hand_size - 2);
+        assert_eq!(d.draw.len(), starting_cows.len() - d.hand_size);
+        assert_eq!(d.discard.len(), 1);
+        assert_eq!(d.cowPoints(), 0);
+        assert_eq!(d.handValue(), 4);
+
+        assert_eq!(d.playCard(Card::CowCard(Cow::new(CowColor::Angus, 0))), Ok(()));
+        assert_eq!(d.hand.len(), d.hand_size - 3);
+        assert_eq!(d.draw.len(), starting_cows.len() - d.hand_size);
+        assert_eq!(d.discard.len(), 2);
+        assert_eq!(d.cowPoints(), 0);
+        assert_eq!(d.handValue(), 2);
+
+        d.addCard(Card::CowCard(Cow::new(CowColor::Longhorn, 7)));
+        assert_eq!(d.hand.len(), d.hand_size - 3);
+        assert_eq!(d.draw.len(), starting_cows.len() - d.hand_size);
+        assert_eq!(d.discard.len(), 3);
+        assert_eq!(d.cowPoints(), 7);
+        assert_eq!(d.handValue(), 2);
+
+        assert_eq!(d.objectiveCards(), Vec::<Objective>::new());
+        let obj = Objective::new(None, 5, 5, &[]);
+        d.addCard(Card::ObjectiveCard(obj));
+        assert_eq!(d.hand.len(), d.hand_size - 3);
+        assert_eq!(d.draw.len(), starting_cows.len() - d.hand_size);
+        assert_eq!(d.discard.len(), 4);
+        assert_eq!(d.cowPoints(), 7);
+        assert_eq!(d.handValue(), 2);
+        assert_eq!(d.objectiveCards(), vec![obj]);
     }
 }
