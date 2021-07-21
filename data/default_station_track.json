@@ -1,0 +1,344 @@
+{
+  "end": 39,
+  "engine_loc": [
+    {
+      "MainTrack": 0
+    },
+    {
+      "MainTrack": 0
+    },
+    {
+      "MainTrack": 0
+    },
+    {
+      "MainTrack": 0
+    }
+  ],
+  "final_station": {
+    "location": 39,
+    "price": -3,
+    "points": 9,
+    "advanced_disc": true,
+    "placed_discs": [
+      false,
+      false,
+      false,
+      false
+    ],
+    "station_master": null
+  },
+  "stations": [
+    {
+      "location": 5,
+      "price": -2,
+      "points": 1,
+      "advanced_disc": false,
+      "placed_discs": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "station_master": null
+    },
+    {
+      "location": 8,
+      "price": -2,
+      "points": 1,
+      "advanced_disc": false,
+      "placed_discs": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "station_master": null
+    },
+    {
+      "location": 11,
+      "price": -4,
+      "points": 2,
+      "advanced_disc": false,
+      "placed_discs": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "station_master": null
+    },
+    {
+      "location": 14,
+      "price": -4,
+      "points": 2,
+      "advanced_disc": false,
+      "placed_discs": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "station_master": null
+    },
+    {
+      "location": 17,
+      "price": -6,
+      "points": 3,
+      "advanced_disc": true,
+      "placed_discs": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "station_master": null
+    },
+    {
+      "location": 22,
+      "price": -8,
+      "points": 5,
+      "advanced_disc": true,
+      "placed_discs": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "station_master": null
+    },
+    {
+      "location": 26,
+      "price": -7,
+      "points": 6,
+      "advanced_disc": true,
+      "placed_discs": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "station_master": null
+    },
+    {
+      "location": 30,
+      "price": -6,
+      "points": 7,
+      "advanced_disc": true,
+      "placed_discs": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "station_master": null
+    },
+    {
+      "location": 34,
+      "price": -5,
+      "points": 8,
+      "advanced_disc": true,
+      "placed_discs": [
+        false,
+        false,
+        false,
+        false
+      ],
+      "station_master": null
+    }
+  ],
+  "crossings": [
+    4,
+    5,
+    6,
+    8,
+    10,
+    11,
+    12,
+    14,
+    16,
+    17,
+    18
+  ],
+  "cities": {
+    "cities": [
+      {
+        "location": 0,
+        "points": -6,
+        "coins": 6,
+        "advanced_disc": false,
+        "limited": false,
+        "placed_discs": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "name": "Kansas City"
+      },
+      {
+        "location": 1,
+        "points": 0,
+        "coins": 0,
+        "advanced_disc": false,
+        "limited": true,
+        "placed_discs": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "name": "Topeka"
+      },
+      {
+        "location": 4,
+        "points": 0,
+        "coins": 0,
+        "advanced_disc": false,
+        "limited": true,
+        "placed_discs": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "name": "Wichita"
+      },
+      {
+        "location": 6,
+        "points": 0,
+        "coins": 0,
+        "advanced_disc": false,
+        "limited": true,
+        "placed_discs": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "name": "Colorado Springs"
+      },
+      {
+        "location": 8,
+        "points": 0,
+        "coins": 0,
+        "advanced_disc": false,
+        "limited": true,
+        "placed_discs": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "name": "Santa Fe"
+      },
+      {
+        "location": 10,
+        "points": 0,
+        "coins": 0,
+        "advanced_disc": true,
+        "limited": true,
+        "placed_discs": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "name": "Albuquerque"
+      },
+      {
+        "location": 12,
+        "points": 0,
+        "coins": 0,
+        "advanced_disc": true,
+        "limited": true,
+        "placed_discs": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "name": "El Paso"
+      },
+      {
+        "location": 14,
+        "points": 0,
+        "coins": 0,
+        "advanced_disc": false,
+        "limited": true,
+        "placed_discs": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "name": "San Diego"
+      },
+      {
+        "location": 16,
+        "points": 6,
+        "coins": 0,
+        "advanced_disc": true,
+        "limited": true,
+        "placed_discs": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "name": "Sacramento"
+      },
+      {
+        "location": 18,
+        "points": 9,
+        "coins": 0,
+        "advanced_disc": true,
+        "limited": false,
+        "placed_discs": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "name": "San Francisco"
+      }
+    ],
+    "pair_action": [
+      {
+        "take_obj": false,
+        "points": 0
+      },
+      {
+        "take_obj": true,
+        "points": -3
+      },
+      {
+        "take_obj": false,
+        "points": -1
+      },
+      {
+        "take_obj": true,
+        "points": 0
+      },
+      {
+        "take_obj": true,
+        "points": 0
+      },
+      {
+        "take_obj": false,
+        "points": 6
+      },
+      {
+        "take_obj": false,
+        "points": 8
+      },
+      {
+        "take_obj": false,
+        "points": 4
+      },
+      {
+        "take_obj": false,
+        "points": 0
+      }
+    ]
+  }
+}

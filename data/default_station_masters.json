@@ -1,0 +1,66 @@
+[
+  {
+    "points": {
+      "TepeePairMult": 3
+    },
+    "bonus": {
+      "items": [
+        null,
+        null
+      ]
+    },
+    "perm_cert": true
+  },
+  {
+    "points": {
+      "AllEmployeesMult": 1
+    },
+    "bonus": {
+      "items": [
+        {
+          "TakeCoins": {
+            "Exact": 2
+          }
+        },
+        null
+      ]
+    },
+    "perm_cert": false
+  },
+  {
+    "points": {
+      "HazardPairMult": 3
+    },
+    "bonus": {
+      "items": [
+        null,
+        null
+      ]
+    },
+    "perm_cert": true
+  },
+  {
+    "points": {
+      "ObjectivePairMult": 3
+    },
+    "bonus": {
+      "items": [
+        "TakeTepee",
+        "TakeHazard"
+      ]
+    },
+    "perm_cert": false
+  },
+  {
+    "points": {
+      "CertificatePairMult": 3
+    },
+    "bonus": {
+      "items": [
+        null,
+        null
+      ]
+    },
+    "perm_cert": true
+  }
+]
