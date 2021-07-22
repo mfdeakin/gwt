@@ -1,8 +1,8 @@
+use serde::{Deserialize, Serialize};
 
-use serde::{Serialize, Deserialize};
-use crate::actions::{ActionTag, DiscardCardOpts, ActionValues};
-use crate::logical::{And, Or, XOr};
+use crate::actions::{ActionTag, ActionValues, DiscardCardOpts};
 use crate::deck::CowColor;
+use crate::logical::{And, Or, XOr};
 use crate::player::Employee;
 
 #[derive(Copy, Clone, Eq, PartialEq, Serialize, Deserialize, Debug)]
@@ -32,6 +32,7 @@ pub struct Hazard {
     toll: Toll,
     points: u32,
 }
+
 impl Hazard {
     pub fn new(area: HazardType, toll: Toll, points: u32) -> Hazard {
         Hazard { area, toll, points }
@@ -212,8 +213,7 @@ impl Building {
                         ]),
                         _ => panic!("Invalid building specified")
                     }
-                }
-                else {
+                } else {
                     match num {
                         0 => Or::new(&[
                             XOr::new(&[And::new(&[

@@ -1,12 +1,14 @@
-use rand::{thread_rng, SeedableRng};
-use serde::{Serialize, Deserialize};
-use crate::actions::{ActionTag, ActionValues};
-use crate::player::{Player, ObjectiveResources};
-use crate::logical::And;
 use std::mem::swap;
-use rand_pcg::Pcg64;
+
+use rand::{SeedableRng, thread_rng};
 use rand::prelude::SliceRandom;
+use rand_pcg::Pcg64;
+use serde::{Deserialize, Serialize};
+
+use crate::actions::ActionTag;
 use crate::deck::Card::{CowCard, ObjectiveCard};
+use crate::logical::And;
+use crate::player::ObjectiveResources;
 
 #[derive(Copy, Clone, Eq, PartialEq, Serialize, Deserialize, Debug)]
 pub enum Card {
@@ -199,20 +201,6 @@ impl Cow {
         Cow { color, points }
     }
 
-    pub fn defaultCowDeck() -> Vec<Cow> {
-        vec![
-            vec![Cow::new(CowColor::Holstein, 1); 7],
-            vec![Cow::new(CowColor::Swiss, 2); 7],
-            vec![Cow::new(CowColor::Ayrshire, 3); 7],
-            vec![Cow::new(CowColor::Highland, 3); 3],
-            vec![Cow::new(CowColor::Highland, 4); 3],
-            vec![Cow::new(CowColor::Highland, 5); 3],
-            vec![Cow::new(CowColor::Longhorn, 5); 2],
-            vec![Cow::new(CowColor::Longhorn, 6); 2],
-            vec![Cow::new(CowColor::Longhorn, 7); 2],
-        ].into_iter().flatten().collect::<Vec<Cow>>()
-    }
-
     pub fn value(&self) -> u32 {
         match self.color {
             CowColor::Jersey => 1,
@@ -225,15 +213,6 @@ impl Cow {
             CowColor::Highland => 4,
             CowColor::Longhorn => 5,
         }
-    }
-
-    pub fn playerStartingDeck() -> Vec<Cow> {
-        let mut deck = Vec::from([Cow::new(CowColor::Jersey, 0); 5]);
-        deck.append(&mut Vec::from([Cow::new(CowColor::Dutch, 0); 3]));
-        deck.append(&mut Vec::from([Cow::new(CowColor::Guernsey, 0); 3]));
-        deck.append(&mut Vec::from([Cow::new(CowColor::Angus, 0); 3]));
-
-        return deck;
     }
 }
 
@@ -280,147 +259,92 @@ impl Objective {
         Objective { immediate, success_pts, fail_pts, requirements: And::new(requirements) }
     }
 
-    pub fn meetsRequirements(&self, mut resources: ObjectiveResources) -> bool {
+    pub fn meetsRequirements(&self, mut resources: ObjectiveResources) -> Option<ObjectiveResources> {
         for req_opt in self.requirements.items {
             if let Some(obj_req) = req_opt {
                 let req_test =
-                match obj_req {
-                    ObjectiveRequirements::Building => {
-                        if resources.buildings > 0
-                        {
-                            resources.buildings -= 1;
-                            true
-                        } else { false }
-                    }
-                    ObjectiveRequirements::Hazard => {
-                        if resources.hazards > 0
-                        {
-                            resources.hazards -= 1;
-                            true
-                        } else { false }
-                    }
-                    ObjectiveRequirements::SanFran => {
-                        if resources.san_fran > 0
-                        {
-                            resources.san_fran -= 1;
-                            true
-                        } else { false }
-                    }
-                    ObjectiveRequirements::GreenTepee => {
-                        if resources.green_tepees > 0
-                        {
-                            resources.green_tepees -= 1;
-                            true
-                        } else { false }
-                    }
-                    ObjectiveRequirements::BlueTepee => {
-                        if resources.blue_tepees > 0
-                        {
-                            resources.blue_tepees -= 1;
-                            true
-                        } else { false }
-                    }
-                    ObjectiveRequirements::StationDisc => {
-                        if resources.station_discs > 0
-                        {
-                            resources.station_discs -= 1;
-                            true
-                        } else { false }
-                    }
-                    ObjectiveRequirements::Cow(v) => {
-                        if v == 3 {
-                            if resources.ryb_cows > 0
+                    match obj_req {
+                        ObjectiveRequirements::Building => {
+                            if resources.buildings > 0
                             {
-                                resources.ryb_cows -= 1;
+                                resources.buildings -= 1;
                                 true
                             } else { false }
-                        } else if v == 4 {
-                            if resources.brown_cows > 0
+                        }
+                        ObjectiveRequirements::Hazard => {
+                            if resources.hazards > 0
                             {
-                                resources.brown_cows -= 1;
+                                resources.hazards -= 1;
                                 true
                             } else { false }
-                        } else if v == 5 {
-                            if resources.purple_cows > 0
+                        }
+                        ObjectiveRequirements::SanFran => {
+                            if resources.san_fran > 0
                             {
-                                resources.purple_cows -= 1;
+                                resources.san_fran -= 1;
                                 true
                             } else { false }
-                        } else { unreachable!() }
-                    }
-                };
+                        }
+                        ObjectiveRequirements::GreenTepee => {
+                            if resources.green_tepees > 0
+                            {
+                                resources.green_tepees -= 1;
+                                true
+                            } else { false }
+                        }
+                        ObjectiveRequirements::BlueTepee => {
+                            if resources.blue_tepees > 0
+                            {
+                                resources.blue_tepees -= 1;
+                                true
+                            } else { false }
+                        }
+                        ObjectiveRequirements::StationDisc => {
+                            if resources.station_discs > 0
+                            {
+                                resources.station_discs -= 1;
+                                true
+                            } else { false }
+                        }
+                        ObjectiveRequirements::Cow(v) => {
+                            if v == 3 {
+                                if resources.ryb_cows > 0
+                                {
+                                    resources.ryb_cows -= 1;
+                                    true
+                                } else { false }
+                            } else if v == 4 {
+                                if resources.brown_cows > 0
+                                {
+                                    resources.brown_cows -= 1;
+                                    true
+                                } else { false }
+                            } else if v == 5 {
+                                if resources.purple_cows > 0
+                                {
+                                    resources.purple_cows -= 1;
+                                    true
+                                } else { false }
+                            } else { unreachable!() }
+                        }
+                    };
                 if req_test == false {
-                    return false;
+                    return None;
                 }
             }
         }
-        true
-    }
-
-    pub fn baseObjectives() -> Vec<Objective> {
-        vec![Objective::new(None, 3, 0,
-                            &[ObjectiveRequirements::Cow(3), ObjectiveRequirements::Cow(4), ObjectiveRequirements::Building, ]),
-             Objective::new(None, 3, 0,
-                            &[ObjectiveRequirements::BlueTepee, ObjectiveRequirements::Hazard, ObjectiveRequirements::Hazard, ]),
-             Objective::new(None, 3, 0,
-                            &[ObjectiveRequirements::StationDisc, ObjectiveRequirements::StationDisc, ObjectiveRequirements::GreenTepee, ]),
-             Objective::new(None, 3, 0,
-                            &[ObjectiveRequirements::Building, ObjectiveRequirements::Building, ObjectiveRequirements::Hazard, ]),
-        ]
-    }
-
-    pub fn objectives() -> Vec<Objective> {
-        let teleport = Some(ActionTag::TeleportCattleman(ActionValues::Exact(3)));
-        let move_eng_2 = Some(ActionTag::MoveEngine(ActionValues::Exact(2)));
-        let move_eng_3 = Some(ActionTag::MoveEngine(ActionValues::Exact(3)));
-        let dbl_aux = Some(ActionTag::DoubleAuxiliary);
-        let take_coins = Some(ActionTag::TakeCoins(ActionValues::Exact(2)));
-        let draw_cards = Some(ActionTag::DrawCards(ActionValues::Exact(3)));
-
-        let cow_3 = ObjectiveRequirements::Cow(3);
-        let cow_4 = ObjectiveRequirements::Cow(4);
-        let cow_5 = ObjectiveRequirements::Cow(5);
-        use ObjectiveRequirements::StationDisc;
-        use ObjectiveRequirements::GreenTepee;
-        use ObjectiveRequirements::BlueTepee;
-        use ObjectiveRequirements::Hazard;
-        use ObjectiveRequirements::Building;
-        use ObjectiveRequirements::SanFran;
-        vec![
-            Objective::new(dbl_aux, 5, 3, &[SanFran, ]),
-            Objective::new(dbl_aux, 5, 3, &[SanFran, ]),
-            Objective::new(dbl_aux, 5, 3, &[SanFran, ]),
-            Objective::new(dbl_aux, 5, 3, &[SanFran, ]),
-            Objective::new(draw_cards, 4, 2, &[cow_3, cow_3, cow_3, StationDisc, ]),
-            Objective::new(take_coins, 4, 2, &[cow_3, cow_3, cow_3, Building, ]),
-            Objective::new(move_eng_2, 5, 3, &[cow_3, cow_4, cow_5, ]),
-            Objective::new(teleport, 5, 2, &[cow_3, cow_4, cow_5, ]),
-            Objective::new(teleport, 5, 2, &[cow_3, cow_4, Hazard, Hazard, ]),
-            Objective::new(take_coins, 3, 2, &[cow_4, Hazard, Hazard, ]),
-            Objective::new(move_eng_2, 5, 3, &[cow_4, cow_4, StationDisc, GreenTepee, ]),
-            Objective::new(draw_cards, 3, 2, &[cow_5, Hazard, ]),
-            Objective::new(take_coins, 3, 2, &[StationDisc, StationDisc, Hazard, ]),
-            Objective::new(move_eng_3, 5, 3, &[StationDisc, StationDisc, Hazard, Hazard, ]),
-            Objective::new(teleport, 5, 2, &[StationDisc, StationDisc, Building, Building, ]),
-            Objective::new(teleport, 5, 2, &[StationDisc, StationDisc, BlueTepee, BlueTepee, ]),
-            Objective::new(draw_cards, 3, 2, &[StationDisc, GreenTepee, GreenTepee, ]),
-            Objective::new(draw_cards, 3, 2, &[StationDisc, GreenTepee, BlueTepee, ]),
-            Objective::new(draw_cards, 3, 2, &[Building, Building, Hazard, ]),
-            Objective::new(teleport, 5, 2, &[Building, Building, Hazard, Hazard, ]),
-            Objective::new(move_eng_2, 5, 3, &[Building, Building, GreenTepee, GreenTepee, ]),
-            Objective::new(move_eng_3, 5, 3, &[Building, BlueTepee, Hazard, Hazard, ]),
-            Objective::new(take_coins, 3, 2, &[Building, BlueTepee, BlueTepee, ]),
-            Objective::new(take_coins, 3, 2, &[Building, GreenTepee, BlueTepee, ]),
-        ]
+        Some(resources)
     }
 }
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-    use std::path::Path;
     use std::fs;
+    use std::path::Path;
+
     use crate::deck::Card::CowCard;
+
+    use super::*;
 
     #[test]
     fn testDeck() {

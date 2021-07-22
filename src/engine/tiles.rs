@@ -1,5 +1,6 @@
-use serde::{Serialize, Deserialize};
-use crate::buildings::{HazardType, Hazard, Tepee, Toll};
+use serde::{Deserialize, Serialize};
+
+use crate::buildings::{Hazard, HazardType, Tepee, Toll};
 use crate::player::Employee;
 
 // https://github.com/rust-lang/rust/issues/83574
@@ -147,8 +148,9 @@ impl JobMarket {
 
 #[cfg(test)]
 mod tests {
-    use super::*;
     use crate::player::Employee;
+
+    use super::*;
 
     #[test]
     fn testJobMarket1() {

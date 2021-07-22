@@ -1,5 +1,15 @@
 #![allow(non_snake_case)]
 
+use std::fs::read_to_string;
+use std::path::Path;
+
+use serde::{Deserialize, Serialize};
+
+use crate::buildings::Building;
+use crate::deck::{Cow, CowMarket, Objective};
+use crate::player::Player;
+use crate::tracks::SpaceOccupant;
+
 pub mod actions;
 pub mod player;
 pub mod buildings;
@@ -7,14 +17,6 @@ pub mod tracks;
 pub mod logical;
 pub mod deck;
 pub mod tiles;
-
-use serde::{Serialize, Deserialize};
-use crate::buildings::Building;
-use crate::player::Player;
-use crate::deck::{Objective, CowMarket, Cow};
-use crate::tracks::SpaceOccupant;
-use std::path::Path;
-use std::fs::read_to_string;
 
 #[derive(Clone, Eq, PartialEq, Serialize, Deserialize, Debug)]
 pub struct Engine {
@@ -38,7 +40,7 @@ impl Engine {
         }
         let track_path = Path::new("data/default_track.json");
         let track_str = read_to_string(track_path).unwrap();
-        let track : Vec<SpaceOccupant> = serde_json::from_str(&track_str).unwrap();
+        let track: Vec<SpaceOccupant> = serde_json::from_str(&track_str).unwrap();
         return Engine { starting_player: 0, current_player: 0, players, cows: CowMarket::new(), objectives: Vec::<Objective>::new(), track };
     }
 }

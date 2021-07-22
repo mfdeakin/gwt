@@ -1,7 +1,8 @@
-use serde::{Serialize, Deserialize};
-use crate::buildings::{Building, Hazard, Tepee, HazardType};
-use crate::logical::And;
+use serde::{Deserialize, Serialize};
+
 use crate::actions::{ActionTag, ActionValues};
+use crate::buildings::{Building, Hazard, HazardType, Tepee};
+use crate::logical::And;
 
 #[derive(Copy, Clone, Eq, PartialEq, Serialize, Deserialize, Debug)]
 pub enum SpaceOccupant {
@@ -90,7 +91,5 @@ impl StationTrack {
         }
     }
 
-    pub fn makeDelivery(&mut self, player: u32, city: u32) {
-
-    }
+    pub fn makeDelivery(&mut self, player: u32, city: u32) {}
 }

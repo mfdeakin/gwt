@@ -1,10 +1,11 @@
-
-use serde::{Serialize, Deserialize};
-use crate::deck::{Objective, Deck, Cow, Card};
-use crate::buildings::{Building, Hazard};
 use std::cmp::min;
-use crate::deck::Card::CowCard;
+
+use serde::{Deserialize, Serialize};
+
 use crate::actions::ActionTag;
+use crate::buildings::{Building, Hazard};
+use crate::deck::{Card, Cow, Deck, Objective};
+use crate::deck::Card::CowCard;
 
 #[derive(Copy, Clone, Eq, PartialEq, Serialize, Deserialize, Debug)]
 pub enum Employee {
@@ -41,9 +42,7 @@ impl AuxiliaryAction {
 }
 
 #[derive(Copy, Clone, Eq, PartialEq, Serialize, Deserialize, Debug)]
-pub struct PlayerBoard {
-
-}
+pub struct PlayerBoard {}
 
 #[derive(Clone, Eq, PartialEq, Serialize, Deserialize, Debug)]
 pub struct Player {
@@ -53,7 +52,8 @@ pub struct Player {
     hired: [u32; 3],
     deck: Deck,
     playedObjectives: Vec<Objective>,
-    playedBuildings: Vec<usize>, // Contains the locations of played buildings on the track
+    playedBuildings: Vec<usize>,
+    // Contains the locations of played buildings on the track
     buildings: Vec<Building>,
     hazards: Vec<Hazard>,
     green_tepees: u32,
@@ -98,5 +98,4 @@ impl Player {
     pub fn tepeePairs(&self) -> u32 {
         min(self.green_tepees, self.blue_tepees)
     }
-
 }
