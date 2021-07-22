@@ -32,6 +32,11 @@ pub struct Hazard {
     toll: Toll,
     points: u32,
 }
+impl Hazard {
+    pub fn new(area: HazardType, toll: Toll, points: u32) -> Hazard {
+        Hazard { area, toll, points }
+    }
+}
 
 #[derive(Copy, Clone, Eq, PartialEq, Serialize, Deserialize, Debug)]
 pub struct Building {

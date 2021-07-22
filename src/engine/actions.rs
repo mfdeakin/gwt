@@ -48,6 +48,9 @@ pub enum ActionValues {
     ForestMult(i32), // Multiplier based on the number of the players buildings in the forest
     TepeePairMult(i32), // Multiplier based on the number of blue-green tepee pairs
     HazardPairMult(i32), // Multiplier based on the number of blue-green tepee pairs
+    CertificatePairMult(i32), // Multiplier based on the number of blue-green tepee pairs
+    ObjectivePairMult(i32), // Multiplier based on the number of blue-green tepee pairs
+    AtMost(i32), // Player choice, only used when an engine reaches the end of the track
     Max,
 }
 

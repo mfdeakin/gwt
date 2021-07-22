@@ -1,4 +1,3 @@
-
 use serde::{Serialize, Deserialize};
 use crate::buildings::{HazardType, Hazard, Tepee, Toll};
 use crate::player::Employee;
@@ -105,7 +104,7 @@ impl JobMarket {
     }
 
     pub fn hireEmployee(&mut self, emp: Employee, salary: i32) -> Result<(), String> {
-       for (i, e) in self.employees.iter().enumerate() {
+        for (i, e) in self.employees.iter().enumerate() {
             if *e == Some(emp) && self.salary(i) == salary {
                 self.employees[i] = None;
                 return Ok(());
@@ -213,5 +212,9 @@ mod tests {
                 assert_eq!(truth[i], check[i].0);
             }
         }
+        for _ in 0..3 {
+            assert_eq!(market.hireEmployee(Employee::Engineer, 5), Ok(()));
+        }
+        assert_ne!(market.hireEmployee(Employee::Engineer, 5), Ok(()));
     }
 }

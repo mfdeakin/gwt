@@ -1,8 +1,7 @@
-
 use rand::{thread_rng, SeedableRng};
 use serde::{Serialize, Deserialize};
 use crate::actions::{ActionTag, ActionValues};
-use crate::player::Player;
+use crate::player::{Player, ObjectiveResources};
 use crate::logical::And;
 use std::mem::swap;
 use rand_pcg::Pcg64;
@@ -63,7 +62,7 @@ impl Deck {
     }
 
     pub fn shuffleDiscard(&mut self) {
-        swap(&mut self.draw,&mut self.discard);
+        swap(&mut self.draw, &mut self.discard);
         self.draw.shuffle(&mut self.rng);
     }
 
@@ -73,7 +72,10 @@ impl Deck {
 
     pub fn trashCard(&mut self, card: Card) -> Result<(), String> {
         match self.hand.iter().position(|c| { *c == card }) {
-            Some(idx) => { self.hand.remove(idx); Ok(()) }
+            Some(idx) => {
+                self.hand.remove(idx);
+                Ok(())
+            }
             None => Err("Card isn't in hand".to_string())
         }
     }
@@ -83,7 +85,7 @@ impl Deck {
             Ok(()) => {
                 self.discard.push(card);
                 Ok(())
-            },
+            }
             err => err
         }
     }
@@ -101,7 +103,7 @@ impl Deck {
     }
 
     pub fn cowInHand(&self, color: CowColor) -> Option<Cow> {
-        let cows : Vec<Cow> = Deck::deckCowCards(&self.hand).iter()
+        let cows: Vec<Cow> = Deck::deckCowCards(&self.hand).iter()
             .filter(|c| { (**c).color == color })
             .map(|c| { *c })
             .collect();
@@ -116,16 +118,23 @@ impl Deck {
         let mut cows: Vec<CowColor> = Deck::deckCowCards(&self.hand).iter()
             .map(|c| { (*c).color })
             .collect();
-        cows.sort();
-        let mut prev = cows.iter();
-        let mut dup_cow = Vec::<CowColor>::new();
-        for cur in prev.next() {
-            if *cur == prev[0] && !dup_cow.contains(*cur){
-                dup_cow.push(*cur);
+        if cows.len() == 0 {
+            vec![]
+        } else {
+            cows.sort_unstable();
+            let mut dup_cow = Vec::<CowColor>::with_capacity(self.hand_size);
+            let mut iter = cows.iter();
+            let mut prev = iter.next().unwrap();
+            let mut next = iter.next();
+            while next != None {
+                if *prev == *next.unwrap() && !dup_cow.contains(prev) {
+                    dup_cow.push(*prev);
+                }
+                prev = next.unwrap();
+                next = iter.next();
             }
-            prev = prev.next().unwrap();
+            dup_cow
         }
-        dup_cow
     }
 
     pub fn cowCards(&self) -> Vec<Cow> {
@@ -164,7 +173,6 @@ impl Deck {
             .map(|obj_card| { if let ObjectiveCard(obj) = *obj_card { obj } else { unreachable!() } })
             .collect()
     }
-
 }
 
 #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Serialize, Deserialize, Debug)]
@@ -268,12 +276,85 @@ pub struct Objective {
 
 impl Objective {
     pub fn new(immediate: Option<ActionTag>, success_pts: u32, fail_pts: u32,
-           requirements: &[ObjectiveRequirements]) -> Objective {
+               requirements: &[ObjectiveRequirements]) -> Objective {
         Objective { immediate, success_pts, fail_pts, requirements: And::new(requirements) }
     }
 
-    pub fn meetsRequirements(&self, player: &Player) -> bool {
-        panic!("Not implemented");
+    pub fn meetsRequirements(&self, mut resources: ObjectiveResources) -> bool {
+        for req_opt in self.requirements.items {
+            if let Some(obj_req) = req_opt {
+                let req_test =
+                match obj_req {
+                    ObjectiveRequirements::Building => {
+                        if resources.buildings > 0
+                        {
+                            resources.buildings -= 1;
+                            true
+                        } else { false }
+                    }
+                    ObjectiveRequirements::Hazard => {
+                        if resources.hazards > 0
+                        {
+                            resources.hazards -= 1;
+                            true
+                        } else { false }
+                    }
+                    ObjectiveRequirements::SanFran => {
+                        if resources.san_fran > 0
+                        {
+                            resources.san_fran -= 1;
+                            true
+                        } else { false }
+                    }
+                    ObjectiveRequirements::GreenTepee => {
+                        if resources.green_tepees > 0
+                        {
+                            resources.green_tepees -= 1;
+                            true
+                        } else { false }
+                    }
+                    ObjectiveRequirements::BlueTepee => {
+                        if resources.blue_tepees > 0
+                        {
+                            resources.blue_tepees -= 1;
+                            true
+                        } else { false }
+                    }
+                    ObjectiveRequirements::StationDisc => {
+                        if resources.station_discs > 0
+                        {
+                            resources.station_discs -= 1;
+                            true
+                        } else { false }
+                    }
+                    ObjectiveRequirements::Cow(v) => {
+                        if v == 3 {
+                            if resources.ryb_cows > 0
+                            {
+                                resources.ryb_cows -= 1;
+                                true
+                            } else { false }
+                        } else if v == 4 {
+                            if resources.brown_cows > 0
+                            {
+                                resources.brown_cows -= 1;
+                                true
+                            } else { false }
+                        } else if v == 5 {
+                            if resources.purple_cows > 0
+                            {
+                                resources.purple_cows -= 1;
+                                true
+                            } else { false }
+                        } else { unreachable!() }
+                    }
+                };
+                if req_test == false {
+                    return false;
+                }
+            }
+        }
+        true
     }
 
     pub fn baseObjectives() -> Vec<Objective> {
@@ -306,30 +387,30 @@ impl Objective {
         use ObjectiveRequirements::Building;
         use ObjectiveRequirements::SanFran;
         vec![
-            Objective::new(dbl_aux, 5, 3, &[SanFran,]),
-            Objective::new(dbl_aux, 5, 3, &[SanFran,]),
-            Objective::new(dbl_aux, 5, 3, &[SanFran,]),
-            Objective::new(dbl_aux, 5, 3, &[SanFran,]),
-            Objective::new(draw_cards, 4, 2, &[cow_3, cow_3, cow_3, StationDisc,]),
-            Objective::new(take_coins, 4, 2, &[cow_3, cow_3, cow_3, Building,]),
-            Objective::new(move_eng_2, 5, 3, &[cow_3, cow_4, cow_5,]),
-            Objective::new(teleport, 5, 2, &[cow_3, cow_4, cow_5,]),
-            Objective::new(teleport, 5, 2, &[cow_3, cow_4, Hazard, Hazard,]),
-            Objective::new(take_coins, 3, 2, &[cow_4, Hazard, Hazard,]),
-            Objective::new(move_eng_2, 5, 3, &[cow_4, cow_4, StationDisc, GreenTepee,]),
-            Objective::new(draw_cards, 3, 2, &[cow_5, Hazard,]),
-            Objective::new(take_coins, 3, 2, &[StationDisc, StationDisc, Hazard,]),
-            Objective::new(move_eng_3, 5, 3, &[StationDisc, StationDisc, Hazard, Hazard,]),
-            Objective::new(teleport, 5, 2, &[StationDisc, StationDisc, Building, Building,]),
-            Objective::new(teleport, 5, 2, &[StationDisc, StationDisc, BlueTepee, BlueTepee,]),
-            Objective::new(draw_cards, 3, 2, &[StationDisc, GreenTepee, GreenTepee,]),
-            Objective::new(draw_cards, 3, 2, &[StationDisc, GreenTepee, BlueTepee,]),
-            Objective::new(draw_cards, 3, 2, &[Building, Building, Hazard,]),
-            Objective::new(teleport, 5, 2, &[Building, Building, Hazard, Hazard,]),
-            Objective::new(move_eng_2, 5, 3, &[Building, Building, GreenTepee, GreenTepee,]),
-            Objective::new(move_eng_3, 5, 3, &[Building, BlueTepee, Hazard, Hazard,]),
-            Objective::new(take_coins, 3, 2, &[Building, BlueTepee, BlueTepee,]),
-            Objective::new(take_coins, 3, 2, &[Building, GreenTepee, BlueTepee,]),
+            Objective::new(dbl_aux, 5, 3, &[SanFran, ]),
+            Objective::new(dbl_aux, 5, 3, &[SanFran, ]),
+            Objective::new(dbl_aux, 5, 3, &[SanFran, ]),
+            Objective::new(dbl_aux, 5, 3, &[SanFran, ]),
+            Objective::new(draw_cards, 4, 2, &[cow_3, cow_3, cow_3, StationDisc, ]),
+            Objective::new(take_coins, 4, 2, &[cow_3, cow_3, cow_3, Building, ]),
+            Objective::new(move_eng_2, 5, 3, &[cow_3, cow_4, cow_5, ]),
+            Objective::new(teleport, 5, 2, &[cow_3, cow_4, cow_5, ]),
+            Objective::new(teleport, 5, 2, &[cow_3, cow_4, Hazard, Hazard, ]),
+            Objective::new(take_coins, 3, 2, &[cow_4, Hazard, Hazard, ]),
+            Objective::new(move_eng_2, 5, 3, &[cow_4, cow_4, StationDisc, GreenTepee, ]),
+            Objective::new(draw_cards, 3, 2, &[cow_5, Hazard, ]),
+            Objective::new(take_coins, 3, 2, &[StationDisc, StationDisc, Hazard, ]),
+            Objective::new(move_eng_3, 5, 3, &[StationDisc, StationDisc, Hazard, Hazard, ]),
+            Objective::new(teleport, 5, 2, &[StationDisc, StationDisc, Building, Building, ]),
+            Objective::new(teleport, 5, 2, &[StationDisc, StationDisc, BlueTepee, BlueTepee, ]),
+            Objective::new(draw_cards, 3, 2, &[StationDisc, GreenTepee, GreenTepee, ]),
+            Objective::new(draw_cards, 3, 2, &[StationDisc, GreenTepee, BlueTepee, ]),
+            Objective::new(draw_cards, 3, 2, &[Building, Building, Hazard, ]),
+            Objective::new(teleport, 5, 2, &[Building, Building, Hazard, Hazard, ]),
+            Objective::new(move_eng_2, 5, 3, &[Building, Building, GreenTepee, GreenTepee, ]),
+            Objective::new(move_eng_3, 5, 3, &[Building, BlueTepee, Hazard, Hazard, ]),
+            Objective::new(take_coins, 3, 2, &[Building, BlueTepee, BlueTepee, ]),
+            Objective::new(take_coins, 3, 2, &[Building, GreenTepee, BlueTepee, ]),
         ]
     }
 }
@@ -345,15 +426,18 @@ mod tests {
     fn testDeck() {
         let path = Path::new("./data/player_starting_deck.json");
         let serialized = fs::read_to_string(path).unwrap();
-        let starting_cows : Vec<Cow> = serde_json::from_str(&serialized).unwrap();
+        let starting_cows: Vec<Cow> = serde_json::from_str(&serialized).unwrap();
         let starting_deck = starting_cows.iter().map(|c| { CowCard(*c) }).collect();
         let mut d = Deck::new_unshuffled(4, starting_deck);
         assert_eq!(d.hand.len(), 0);
         assert_eq!(d.draw.len(), starting_cows.len());
         assert_eq!(d.discard.len(), 0);
         d.refillHand();
+
+
         // The initial hand is 3 angus cows and a guernsey;
         // ie the last 4 listed in the starting deck file
+        assert_eq!(d.pairInHand(), vec![CowColor::Angus]);
         assert_eq!(d.hand.len(), d.hand_size);
         assert_eq!(d.draw.len(), starting_cows.len() - d.hand_size);
         assert_eq!(d.discard.len(), 0);
@@ -361,6 +445,7 @@ mod tests {
         assert_eq!(d.handValue(), 4);
 
         assert_ne!(d.trashCard(Card::CowCard(Cow::new(CowColor::Jersey, 0))), Ok(()));
+        assert_eq!(d.pairInHand(), vec![CowColor::Angus]);
         assert_eq!(d.hand.len(), d.hand_size);
         assert_eq!(d.draw.len(), starting_cows.len() - d.hand_size);
         assert_eq!(d.discard.len(), 0);
@@ -368,6 +453,7 @@ mod tests {
         assert_eq!(d.handValue(), 4);
 
         assert_eq!(d.trashCard(Card::CowCard(Cow::new(CowColor::Angus, 0))), Ok(()));
+        assert_eq!(d.pairInHand(), vec![CowColor::Angus]);
         assert_eq!(d.hand.len(), d.hand_size - 1);
         assert_eq!(d.draw.len(), starting_cows.len() - d.hand_size);
         assert_eq!(d.discard.len(), 0);
@@ -375,6 +461,7 @@ mod tests {
         assert_eq!(d.handValue(), 4);
 
         assert_eq!(d.playCard(Card::CowCard(Cow::new(CowColor::Angus, 0))), Ok(()));
+        assert_eq!(d.pairInHand(), Vec::<CowColor>::new());
         assert_eq!(d.hand.len(), d.hand_size - 2);
         assert_eq!(d.draw.len(), starting_cows.len() - d.hand_size);
         assert_eq!(d.discard.len(), 1);
@@ -382,6 +469,7 @@ mod tests {
         assert_eq!(d.handValue(), 4);
 
         assert_eq!(d.playCard(Card::CowCard(Cow::new(CowColor::Angus, 0))), Ok(()));
+        assert_eq!(d.pairInHand(), Vec::<CowColor>::new());
         assert_eq!(d.hand.len(), d.hand_size - 3);
         assert_eq!(d.draw.len(), starting_cows.len() - d.hand_size);
         assert_eq!(d.discard.len(), 2);
@@ -389,6 +477,7 @@ mod tests {
         assert_eq!(d.handValue(), 2);
 
         d.addCard(Card::CowCard(Cow::new(CowColor::Longhorn, 7)));
+        assert_eq!(d.pairInHand(), Vec::<CowColor>::new());
         assert_eq!(d.hand.len(), d.hand_size - 3);
         assert_eq!(d.draw.len(), starting_cows.len() - d.hand_size);
         assert_eq!(d.discard.len(), 3);
@@ -398,6 +487,7 @@ mod tests {
         assert_eq!(d.objectiveCards(), Vec::<Objective>::new());
         let obj = Objective::new(None, 5, 5, &[]);
         d.addCard(Card::ObjectiveCard(obj));
+        assert_eq!(d.pairInHand(), Vec::<CowColor>::new());
         assert_eq!(d.hand.len(), d.hand_size - 3);
         assert_eq!(d.draw.len(), starting_cows.len() - d.hand_size);
         assert_eq!(d.discard.len(), 4);
