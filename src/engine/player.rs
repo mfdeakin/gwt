@@ -21,6 +21,10 @@ pub struct AuxiliaryAction {
 }
 
 impl AuxiliaryAction {
+    pub fn new(&single_action: ActionTag, &double_action: ActionTag, unlocked: u32) -> AuxiliaryAction {
+        AuxiliaryAction { actions: [single_action, double_action], unlocked }
+    }
+
     pub fn availableActions(&self) -> (Option<ActionTag>, Option<ActionTag>) {
         if self.unlocked == 0 {
             (None, None)
@@ -42,7 +46,9 @@ impl AuxiliaryAction {
 }
 
 #[derive(Copy, Clone, Eq, PartialEq, Serialize, Deserialize, Debug)]
-pub struct PlayerBoard {}
+pub struct PlayerBoard {
+    aux_actions: [AuxiliaryAction; 5]
+}
 
 #[derive(Clone, Eq, PartialEq, Serialize, Deserialize, Debug)]
 pub struct Player {

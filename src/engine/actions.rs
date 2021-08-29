@@ -19,7 +19,6 @@ pub enum Action {
     MoveCattleman(Option<i32>),
     MoveEngine(Option<i32>),
     MoveCertificate(Option<i32>),
-    // Prestige, Pedigree, whatever it's called...
     MaxCertificate,
     TakeTepee(Option<Tepee>),
     TakeHazard(Option<Hazard>),
