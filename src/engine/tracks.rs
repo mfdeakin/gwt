@@ -91,5 +91,7 @@ impl StationTrack {
         }
     }
 
-    pub fn makeDelivery(&mut self, player: u32, city: u32) {}
+    pub fn makeDelivery(&mut self, player: u32, city: u32) {
+
+    }
 }

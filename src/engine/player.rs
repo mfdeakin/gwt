@@ -21,8 +21,8 @@ pub struct AuxiliaryAction {
 }
 
 impl AuxiliaryAction {
-    pub fn new(&single_action: ActionTag, &double_action: ActionTag, unlocked: u32) -> AuxiliaryAction {
-        AuxiliaryAction { actions: [single_action, double_action], unlocked }
+    pub fn new(single_action: &ActionTag, double_action: &ActionTag, unlocked: u32) -> AuxiliaryAction {
+        AuxiliaryAction { actions: [*single_action, *double_action], unlocked }
     }
 
     pub fn availableActions(&self) -> (Option<ActionTag>, Option<ActionTag>) {
